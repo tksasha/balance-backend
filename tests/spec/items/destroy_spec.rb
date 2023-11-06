@@ -5,7 +5,7 @@ RSpec.describe 'DeleteItem' do
 
   it { expect(status).to eq 200 }
 
-  xit { expect(content_type).to eq 'application/json' }
+  it { expect(content_type).to eq 'application/json' }
 
-  xit { expect(body).to eq 'Item Deleted' }
+  it { expect(body).to eq 'Item Deleted' }
 end

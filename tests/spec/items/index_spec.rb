@@ -5,7 +5,7 @@ RSpec.describe 'GetItemsList' do
 
   it { expect(status).to eq 200 }
 
-  xit { expect(content_type).to eq 'application/json' }
+  it { expect(content_type).to eq 'application/json' }
 
-  xit { expect(body).to eq '"Items List"' }
+  it { expect(body).to eq 'Items List' }
 end

@@ -16,9 +16,9 @@ RSpec.describe 'GetItem' do
 
     it { expect(status).to eq 404 }
 
-    xit { expect(content_type).to eq 'application/json' }
+    it { expect(content_type).to eq 'application/json' }
 
-    xit { expect(body).to eq '"Not Found"' }
+    it { expect(body).to eq 'Not Found' }
   end
 
   context 'when id is invalid' do
@@ -26,6 +26,8 @@ RSpec.describe 'GetItem' do
 
     it { expect(status).to eq 422 }
 
-    xit { expect(content_type).to eq 'application/json' }
+    it { expect(content_type).to eq 'application/json' }
+
+    it { expect(body).to eq 'Unprocessable Entity' }
   end
 end

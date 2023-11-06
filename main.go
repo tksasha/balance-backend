@@ -9,70 +9,68 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+func JSON(w http.ResponseWriter, statusCode int, i interface{}) {
+	w.Header().Set("Content-Type", "application/json")
+
+	w.WriteHeader(statusCode)
+
+	json.NewEncoder(w).Encode(i)
+}
+
+func OK(w http.ResponseWriter, i interface{}) {
+	JSON(w, http.StatusOK, i)
+}
+
+func Created(w http.ResponseWriter, i interface{}) {
+	JSON(w, http.StatusCreated, i)
+}
+
+func UnprocessableEntity(w http.ResponseWriter, i interface{}) {
+	JSON(w, http.StatusUnprocessableEntity, i)
+}
+
+func NotFound(w http.ResponseWriter, i interface{}) {
+	JSON(w, http.StatusNotFound, i)
+}
+
 type Item struct {
 	ID 		int			`json:"id"`
 	Name 	string	`json:"name"`
 }
 
 func GetItemsList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	w.WriteHeader(http.StatusOK)
-
-	w.Header().Set("Content-Type", "application/json")
-
-	json.NewEncoder(w).Encode("Items List")
+	OK(w, "Items List")
 }
 
 func GetItem(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	id, err := strconv.Atoi(params.ByName("id"))
 	if err != nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
-
-		w.Header().Set("Content-Type", "application/json")
-
-		json.NewEncoder(w).Encode("Unprocessable Entity")
+		UnprocessableEntity(w, "Unprocessable Entity")
 
 		return
 	}
 
 	if id <= 0 {
-		w.WriteHeader(http.StatusNotFound)
-
-		w.Header().Set("Content-Type", "application/json")
-
-		json.NewEncoder(w).Encode("Not Found")
+		NotFound(w, "Not Found")
 
 		return
 	}
 
 	item := Item{id, "Pretty Red Dress"}
 
-	w.Header().Set("Content-Type", "application/json")
-
-	json.NewEncoder(w).Encode(item)
+	OK(w, item)
 }
 
 func CreateItem(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	w.WriteHeader(http.StatusCreated)
-
-	w.Header().Set("Content-Type", "application/json")
-
-	json.NewEncoder(w).Encode("Item Created")
+	Created(w, "Item Created")
 }
 
 func UpdateItem(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	w.WriteHeader(http.StatusOK)
-
-	w.Header().Set("Content-Type", "application/json")
-
-	json.NewEncoder(w).Encode("Item Updated")
+	OK(w, "Item Updated")
 }
 
 func DeleteItem(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	w.WriteHeader(http.StatusOK)
-
-	w.Header().Set("Content-Type", "application/json")
-
-	json.NewEncoder(w).Encode("Item Deleted")
+	OK(w, "Item Deleted")
 }
 
 func main() {
@@ -87,15 +85,3 @@ func main() {
 
 	log.Fatal(http.ListenAndServe(":3000", router))
 }
-
-/*
-
-TODO: add routes for:
-[+]    GET /items
-[+]    GET /items/:id
-[+]   POST /items
-[+]  PATCH /items/:id
-[+]    PUT /items/:id
-[+] DELETE /items/:id
-
-*/

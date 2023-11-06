@@ -5,5 +5,7 @@ RSpec.describe 'UpdateItem' do
 
   it { expect(status).to eq 200 }
 
-  xit { expect(body).to eq 'Update Item' }
+  it { expect(content_type).to eq 'application/json' }
+
+  it { expect(body).to eq 'Item Updated' }
 end
