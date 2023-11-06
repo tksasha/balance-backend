@@ -24,7 +24,3 @@ Metrics/MethodLength:
 # RSpec
 RSpec/NamedSubject:
   Enabled: false
-
-# Style
-Style/Documentation:
-  Enabled: false

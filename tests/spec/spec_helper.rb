@@ -13,3 +13,15 @@ def connection
     builder.response :json
   end
 end
+
+def status
+  subject.status
+end
+
+def content_type
+  subject.headers[:content_type]
+end
+
+def body
+  subject.body
+end
