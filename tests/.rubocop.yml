@@ -1,0 +1,30 @@
+require:
+  - rubocop-performance
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: true
+
+# Layout
+Layout/LineLength:
+  Max: 120
+
+Layout/SpaceInsideStringInterpolation:
+  EnforcedStyle: space
+
+# Metrics
+Metrics/BlockLength:
+  Exclude:
+  - spec/**/*
+
+Metrics/MethodLength:
+  CountAsOne: ['array', 'heredoc', 'method_call']
+
+# RSpec
+RSpec/NamedSubject:
+  Enabled: false
+
+# Style
+Style/Documentation:
+  Enabled: false
