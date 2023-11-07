@@ -1,2 +1,6 @@
 all:
-	go run main.go
+	@go run \
+		items.go \
+		item.go \
+		renderers.go \
+		main.go
