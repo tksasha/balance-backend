@@ -1,13 +1,20 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
 )
 
+var DB *sql.DB
+
 func main() {
+	DB = OpenDBConnection()
+
+	defer DB.Close()
+
 	router := httprouter.New()
 
 	router.GET("/items", GetItemsList)

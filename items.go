@@ -7,10 +7,6 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func GetItemsList(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	OK(w, "Items List")
-}
-
 func GetItem(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	id, err := strconv.Atoi(params.ByName("id"))
 	if err != nil {
