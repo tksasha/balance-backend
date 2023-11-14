@@ -5,5 +5,4 @@ all:
 		item.go \
 		items.go \
 		main.go \
-		month.go \
 		renderers.go \

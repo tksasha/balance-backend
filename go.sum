@@ -2,3 +2,7 @@ github.com/julienschmidt/httprouter v1.3.0 h1:U0609e9tgbseu3rBINet9P48AI/D3oJs4d
 github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8IZAc4RVcycCCAKdM=
 github.com/mattn/go-sqlite3 v1.14.18 h1:JL0eqdCOq6DJVNPSvArO/bIV9/P7fbGrV00LZHc+5aI=
 github.com/mattn/go-sqlite3 v1.14.18/go.mod h1:2eHXhiwb8IkHr+BDWZGa96P6+rkvnG63S2DGjv9HUNg=
+github.com/tksasha/model v0.0.0-20211128083555-1716514f2f32 h1:Rn7/7fY4wn00Q0ZuB+JhVlKCtzuCIOK1f9URwIdgcok=
+github.com/tksasha/model v0.0.0-20211128083555-1716514f2f32/go.mod h1:CWbUADnox2ih1QrZP8fApCmMH4RhAXV8DKITLgScq+s=
+github.com/tksasha/validations v0.0.0-20231114144659-5875af4ef710 h1:z6Rg/7k/RFjIJtmTvjCiKYPW9zIRTg0nGaET22GzByA=
+github.com/tksasha/validations v0.0.0-20231114144659-5875af4ef710/go.mod h1:nIi7STqrwtdXeumBpXAii/x/ktcoSYYegg5m3SXn/WE=
