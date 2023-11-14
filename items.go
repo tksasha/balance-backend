@@ -21,7 +21,7 @@ func GetItem(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 		return
 	}
 
-	item := Item{id, "Pretty Red Dress"}
+	item := Item{}
 
 	OK(w, item)
 }

@@ -2,7 +2,6 @@
 
 require 'debug'
 require 'faraday'
-require 'rspec/its'
 
 RSpec.configure do |config|
   config.order = :random

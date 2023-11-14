@@ -7,5 +7,5 @@ RSpec.describe 'GetItemsList' do
 
   it { expect(content_type).to eq 'application/json' }
 
-  it { expect(body).to eq 'Items List' }
+  it { expect(body.size).to eq 10 }
 end

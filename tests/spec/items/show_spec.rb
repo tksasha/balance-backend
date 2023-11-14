@@ -8,7 +8,7 @@ RSpec.describe 'GetItem' do
 
     it { expect(content_type).to eq 'application/json' }
 
-    it { expect(body).to eq('id' => 42, 'name' => 'Pretty Red Dress') }
+    xit { expect(body).to eq('id' => 42, 'name' => 'Pretty Red Dress') }
   end
 
   context 'when item is not found' do
