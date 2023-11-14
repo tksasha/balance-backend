@@ -27,6 +27,10 @@ func NewItem() *Item {
 
 func (item *Item) Validate() {
 	if item.Date == time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC) {
-		item.Errors.Add("date", validations.CANT_BE_BLANK)
+		item.Errors.Add("date", validations.BLANK)
+	}
+
+	if item.CategoryID == 0 {
+		item.Errors.Add("category_id", validations.BLANK)
 	}
 }

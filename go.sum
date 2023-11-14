@@ -6,3 +6,7 @@ github.com/tksasha/model v0.0.0-20211128083555-1716514f2f32 h1:Rn7/7fY4wn00Q0ZuB
 github.com/tksasha/model v0.0.0-20211128083555-1716514f2f32/go.mod h1:CWbUADnox2ih1QrZP8fApCmMH4RhAXV8DKITLgScq+s=
 github.com/tksasha/validations v0.0.0-20231114144659-5875af4ef710 h1:z6Rg/7k/RFjIJtmTvjCiKYPW9zIRTg0nGaET22GzByA=
 github.com/tksasha/validations v0.0.0-20231114144659-5875af4ef710/go.mod h1:nIi7STqrwtdXeumBpXAii/x/ktcoSYYegg5m3SXn/WE=
+github.com/tksasha/validations v0.0.0-20231114155424-6ca15c1acd9c h1:7e0sibkLpT267P/XY/9kslo2qPCyg6rh+aM+Sw+K66M=
+github.com/tksasha/validations v0.0.0-20231114155424-6ca15c1acd9c/go.mod h1:nIi7STqrwtdXeumBpXAii/x/ktcoSYYegg5m3SXn/WE=
+github.com/tksasha/validations v0.0.1 h1:1Nk/DsX1fbeJo8OO+zpAm+9T4PPeCajtzQfPpgWW4Eo=
+github.com/tksasha/validations v0.0.1/go.mod h1:nIi7STqrwtdXeumBpXAii/x/ktcoSYYegg5m3SXn/WE=
