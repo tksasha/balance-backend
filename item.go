@@ -17,12 +17,12 @@ type Item struct {
 	Formula     string    `json:"formula"`
 }
 
-func NewItem() *Item {
-	item := Item{}
+func NewItem() (item *Item) {
+	item = &Item{}
 
 	item.Errors = validations.NewErrors()
 
-	return &item
+	return
 }
 
 func (item *Item) Validate() {
@@ -33,4 +33,6 @@ func (item *Item) Validate() {
 	if item.CategoryID == 0 {
 		item.Errors.Add("category_id", validations.BLANK)
 	}
+
+	validations.ValidatePresenceOf(item.Errors, "formula", item.Formula)
 }
