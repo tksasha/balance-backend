@@ -1,0 +1,3 @@
+[submodule "github.com/tksasha/model"]
+	path = github.com/tksasha/model
+	url = git@github.com:tksasha/model.git
