@@ -1,16 +1,15 @@
 package main
 
 import (
-	"time"
-
 	"github.com/tksasha/model"
 	"github.com/tksasha/validations"
+	"github.com/tksasha/date"
 )
 
 type Item struct {
 	model.Model
 	ID          int       `json:"id"`
-	Date        time.Time `json:"date"`
+	Date        date.Date `json:"date"`
 	Sum         float32   `json:"sum"`
 	CategoryID  int       `json:"category_id"`
 	Description string    `json:"description"`
@@ -26,7 +25,7 @@ func NewItem() (item *Item) {
 }
 
 func (item *Item) Validate() {
-	if item.Date == time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC) {
+	if item.Date.IsEmpty() {
 		item.Errors.Add("date", validations.BLANK)
 	}
 

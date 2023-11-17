@@ -26,10 +26,6 @@ func GetItem(w http.ResponseWriter, r *http.Request, params httprouter.Params) {
 	OK(w, item)
 }
 
-func CreateItem(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	Created(w, "Item Created")
-}
-
 func UpdateItem(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	OK(w, "Item Updated")
 }

@@ -4,10 +4,11 @@ import (
 	"slices"
 	"strings"
 	"testing"
-	"time"
 
-	"github.com/tksasha/validations"
+	"github.com/tksasha/date"
 )
+
+const M = "\033[31m`%v` was expected, but it is `%v`\033[0m"
 
 func TestValidateDate(t *testing.T) {
 	t.Run("when it is blank", func(t *testing.T) {
@@ -22,14 +23,14 @@ func TestValidateDate(t *testing.T) {
 		expected := "can't be blank"
 
 		if !slices.Contains(errors, expected) {
-			t.Errorf(validations.M, expected, subject)
+			t.Errorf(M, expected, subject)
 		}
 	})
 
 	t.Run("when it is not blank", func(t *testing.T) {
 		item := NewItem()
 
-		item.Date = time.Now()
+		item.Date = date.Today()
 
 		item.Validate()
 
@@ -40,7 +41,7 @@ func TestValidateDate(t *testing.T) {
 		expected := ""
 
 		if len(errors) > 0 {
-			t.Errorf(validations.M, expected, subject)
+			t.Errorf(M, expected, subject)
 		}
 	})
 }
