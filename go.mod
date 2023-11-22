@@ -4,11 +4,10 @@ go 1.21.4
 
 require (
 	github.com/gofiber/fiber/v2 v2.51.0
-	github.com/julienschmidt/httprouter v1.3.0
 	github.com/mattn/go-sqlite3 v1.14.18
 	github.com/tksasha/date v0.0.3
 	github.com/tksasha/formula v0.0.3
-	github.com/tksasha/model v0.0.7
+	github.com/tksasha/model v0.0.9
 	gotest.tools/v3 v3.5.1
 )
 

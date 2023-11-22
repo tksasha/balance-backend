@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"errors"
 
 	"github.com/tksasha/date"
 	"github.com/tksasha/formula"
@@ -34,7 +33,7 @@ func (item *Item) Calculate() {
 		var err error
 
 		if sum, err = formula.Calculate(item.Formula); err != nil {
-			item.Errors.Add("formula", model.ErrIsNotValid)
+			item.Errors.Add("formula", MsgInvalid)
 		}
 
 		item.Sum = sum
@@ -43,15 +42,15 @@ func (item *Item) Calculate() {
 
 func (item *Item) Validate() {
 	if item.Date.IsEmpty() {
-		item.Errors.Add("date", model.ErrIsBlank)
+		item.Errors.Add("date", MsgBlank)
 	}
 
 	if item.CategoryID == 0 {
-		item.Errors.Add("category_id", model.ErrIsBlank)
+		item.Errors.Add("category_id", MsgBlank)
 	}
 
 	if item.Formula == "" {
-		item.Errors.Add("formula", model.ErrIsBlank)
+		item.Errors.Add("formula", MsgBlank)
 	}
 }
 
@@ -68,10 +67,12 @@ func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
 	item.Validate()
 
 	if item.IsNotValid() {
-		return item, errors.New(model.ErrIsNotValid)
+		return item, ClientError
 	}
 
 	_ = CreateItemQuery(db, item)
+
+	// ServerError
 
 	return item, nil
 }

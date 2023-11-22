@@ -7,7 +7,6 @@ import (
 	"testing"
 
 	"github.com/tksasha/date"
-	"github.com/tksasha/model"
 	"gotest.tools/v3/assert"
 )
 
@@ -123,7 +122,7 @@ func TestCreateItem(t *testing.T) {
 	t.Run("when `Date` is blank", func(t *testing.T) {
 		item, err := CreateItem(db, params)
 
-		assert.Error(t, err, model.ErrIsNotValid)
+		assert.ErrorIs(t, err, ClientError)
 
 		errs := item.Errors.Get("date")
 
@@ -133,7 +132,7 @@ func TestCreateItem(t *testing.T) {
 	t.Run("when `CategoryID` is zero", func(t *testing.T) {
 		item, err := CreateItem(db, params)
 
-		assert.Error(t, err, model.ErrIsNotValid)
+		assert.ErrorIs(t, err, ClientError)
 
 		errs := item.Errors.Get("category_id")
 
@@ -145,7 +144,7 @@ func TestCreateItem(t *testing.T) {
 
 		item, err := CreateItem(db, params)
 
-		assert.Error(t, err, model.ErrIsNotValid)
+		assert.ErrorIs(t, err, ClientError)
 
 		errs := item.Errors.Get("formula")
 
@@ -155,7 +154,7 @@ func TestCreateItem(t *testing.T) {
 	t.Run("when `Formula` is empty", func(t *testing.T) {
 		item, err := CreateItem(db, params)
 
-		assert.Error(t, err, model.ErrIsNotValid)
+		assert.ErrorIs(t, err, ClientError)
 
 		errs := item.Errors.Get("formula")
 

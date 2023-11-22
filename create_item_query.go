@@ -2,9 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"errors"
-
-	"github.com/tksasha/model"
 )
 
 func CreateItemQuery(db *sql.DB, item *Item) error {
@@ -17,12 +14,12 @@ func CreateItemQuery(db *sql.DB, item *Item) error {
 
 	res, err := db.Exec(sql, item.Date.String(), item.Formula, item.Sum, item.CategoryID, item.Description)
 	if err != nil {
-		return errors.New(model.ErrExecSQL)
+		return ServerError
 	}
 
 	id, err := res.LastInsertId()
 	if err != nil {
-		return errors.New(model.ErrObtainID)
+		return ServerError
 	}
 
 	item.ID = id
