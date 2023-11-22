@@ -26,11 +26,11 @@ func Close(db *sql.DB) {
 
 func dbname() string {
 	switch os.Getenv("GOENV") {
-		case "production":
-			return "db/production.sqlite3"
-		case "test":
-			return "db/test.sqlite3"
-		default:
-			return "db/development.sqlite3"
+	case "production":
+		return "db/production.sqlite3"
+	case "test":
+		return "db/test.sqlite3"
+	default:
+		return "db/development.sqlite3"
 	}
 }
