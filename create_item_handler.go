@@ -17,6 +17,13 @@ func CreateItemHandler(c *fiber.Ctx) error {
 			JSON(fiber.ErrUnprocessableEntity)
 	}
 
+	//
+	// TODO: check err here
+	//
+	// when ErrIsNotValid return 422
+	// when ErrExecSQL or ErrObtainID return 500
+	//
+
 	item, err := CreateItem(db, params)
 	if err == nil {
 		return c.

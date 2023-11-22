@@ -56,9 +56,7 @@ func (item *Item) Validate() {
 }
 
 func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
-	item := new(Item)
-
-	item.Errors = model.NewErrors()
+	item := NewItem()
 
 	item.Date = params.Date
 	item.CategoryID = params.CategoryID
@@ -73,24 +71,7 @@ func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
 		return item, errors.New(model.ErrIsNotValid)
 	}
 
-	sql := `
-		INSERT INTO
-			items(date, formula, sum, category_id, description)
-		VALUES
-			(?, ?, ?, ?, ?)
-	`
-
-	res, err := db.Exec(sql, item.Date.String(), item.Formula, item.Sum, item.CategoryID, item.Description)
-	if err != nil {
-		return item, errors.New(model.ErrExecSQL)
-	}
-
-	id, err := res.LastInsertId()
-	if err != nil {
-		return item, errors.New(model.ErrObtainID)
-	}
-
-	item.ID = id
+	_ = CreateItemQuery(db, item)
 
 	return item, nil
 }
