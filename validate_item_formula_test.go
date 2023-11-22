@@ -4,19 +4,15 @@ import (
 	"slices"
 	"strings"
 	"testing"
-
-	"github.com/tksasha/date"
 )
 
-const M = "\033[31m`%v` was expected, but it is `%v`\033[0m"
-
-func TestValidateDate(t *testing.T) {
+func TestValidateFormula(t *testing.T) {
 	t.Run("when it is blank", func(t *testing.T) {
 		item := NewItem()
 
 		item.Validate()
 
-		errors := item.Errors.Get("date")
+		errors := item.Errors.Get("formula")
 
 		subject := strings.Join(errors, ", ")
 
@@ -30,11 +26,11 @@ func TestValidateDate(t *testing.T) {
 	t.Run("when it is not blank", func(t *testing.T) {
 		item := NewItem()
 
-		item.Date = date.Today()
+		item.Formula = "42.0 + 69.0"
 
 		item.Validate()
 
-		errors := item.Errors.Get("date")
+		errors := item.Errors.Get("formula")
 
 		subject := strings.Join(errors, ", ")
 

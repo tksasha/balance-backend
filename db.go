@@ -7,12 +7,18 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func OpenDBConnection() *sql.DB {
-	db, err := sql.Open("sqlite3", "db/development.sqlite3")
+func Open() (db *sql.DB) {
+	var err error
 
-	if err != nil {
+	if db, err = sql.Open("sqlite3", "db/development.sqlite3"); err != nil {
 		log.Fatal(err)
 	}
 
-	return db
+	return
+}
+
+func Close(db *sql.DB) {
+	if err := db.Close(); err != nil {
+		log.Fatal(err)
+	}
 }

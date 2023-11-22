@@ -1,28 +1,20 @@
 package main
 
 import (
-	"database/sql"
 	"log"
-	"net/http"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
-var DB *sql.DB
-
 func main() {
-	DB = OpenDBConnection()
+	app := fiber.New()
 
-	defer DB.Close()
+	app.Use(logger.New())
 
-	router := httprouter.New()
+	app.Use(checkContentType)
 
-	router.GET("/items", GetItemsList)
-	router.GET("/items/:id", GetItem)
-	router.POST("/items", CreateItem)
-	router.PATCH("/items/:id", UpdateItem)
-	router.PUT("/items/:id", UpdateItem)
-	router.DELETE("/items/:id", DeleteItem)
+	app.Post("/items", CreateItemHandler)
 
-	log.Fatal(http.ListenAndServe(":3000", router))
+	log.Fatal(app.Listen(":3000"))
 }

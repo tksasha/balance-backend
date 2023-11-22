@@ -3,9 +3,26 @@ module github.com/tksasha/balance
 go 1.21.4
 
 require (
+	github.com/gofiber/fiber/v2 v2.51.0
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/mattn/go-sqlite3 v1.14.18
-	github.com/tksasha/date v0.0.2
-	github.com/tksasha/model v0.0.2
-	github.com/tksasha/validations v0.0.2
+	github.com/tksasha/date v0.0.3
+	github.com/tksasha/formula v0.0.3
+	github.com/tksasha/model v0.0.7
+	gotest.tools/v3 v3.5.1
+)
+
+require (
+	github.com/andybalholm/brotli v1.0.6 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/google/uuid v1.4.0 // indirect
+	github.com/klauspost/compress v1.17.3 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/mattn/go-runewidth v0.0.15 // indirect
+	github.com/rivo/uniseg v0.4.4 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
+	github.com/valyala/fasthttp v1.51.0 // indirect
+	github.com/valyala/tcplisten v1.0.0 // indirect
+	golang.org/x/sys v0.14.0 // indirect
 )

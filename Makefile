@@ -1,9 +1,9 @@
 all:
 	@go run \
-		create_item.go \
+		check_content_type.go \
+		consts.go \
+		create_item_handler.go \
 		db.go \
-		get_items_list.go \
 		item.go \
-		items.go \
+		item_params.go \
 		main.go \
-		renderers.go \
