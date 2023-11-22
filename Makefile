@@ -1,4 +1,9 @@
+.PHONY: run all
+
 all:
+	@GOENV=test go test
+
+run:
 	@go run \
 		check_content_type.go \
 		consts.go \

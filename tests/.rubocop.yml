@@ -5,6 +5,7 @@ require:
 AllCops:
   NewCops: enable
   SuggestExtensions: true
+  TargetRubyVersion: 3.2
 
 # Layout
 Layout/LineLength:
