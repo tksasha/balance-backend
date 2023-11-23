@@ -5,7 +5,7 @@ import (
 
 	"github.com/tksasha/date"
 	"github.com/tksasha/formula"
-	"github.com/tksasha/model"
+	"github.com/tksasha/balance/model"
 )
 
 type Item struct {

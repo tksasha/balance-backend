@@ -8,6 +8,10 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	if os.Getenv("GOENV") != "test" {
+		panic("What are You doing?!")
+	}
+
 	code := func(m *testing.M) int {
 		db := Open()
 

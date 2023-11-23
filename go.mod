@@ -7,7 +7,6 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.18
 	github.com/tksasha/date v0.0.3
 	github.com/tksasha/formula v0.0.3
-	github.com/tksasha/model v0.0.9
 	gotest.tools/v3 v3.5.1
 )
 
