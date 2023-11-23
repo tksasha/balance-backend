@@ -1,8 +1,11 @@
-.PHONY: run all
+.PHONY: all
+all: test
 
-all:
+.PHONY: test
+test:
 	@GOENV=test go test
 
+.PHONY: run
 run:
 	@go run \
 		check_content_type.go \

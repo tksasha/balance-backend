@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 
-	"github.com/tksasha/date"
+	"github.com/tksasha/balance/date"
 	"github.com/tksasha/formula"
 	"github.com/tksasha/balance/model"
 )
@@ -41,7 +41,7 @@ func (item *Item) Calculate() {
 }
 
 func (item *Item) Validate() {
-	if item.Date.IsEmpty() {
+	if item.Date.IsZero() {
 		item.Errors.Add("date", MsgBlank)
 	}
 

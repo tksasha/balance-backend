@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/tksasha/date"
+	"github.com/tksasha/balance/date"
 	"gotest.tools/v3/assert"
 )
 

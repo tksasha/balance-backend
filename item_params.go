@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/tksasha/date"
+	"github.com/tksasha/balance/date"
 )
 
 type ItemParams struct {
