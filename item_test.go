@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/tksasha/balance/date"
+	"github.com/tksasha/balance/model"
 	"gotest.tools/v3/assert"
 )
 
@@ -44,11 +45,11 @@ func TestValidateCategoryID(t *testing.T) {
 	t.Run("when it is blank", func(t *testing.T) {
 		item := NewItem()
 
-		item.Validate()
+		model.Validate(item)
 
 		errs := item.Errors.Get("category_id")
 
-		assert.Assert(t, slices.Contains(errs, "can't be blank"))
+		assert.Assert(t, slices.Contains(errs, "required"))
 	})
 
 	t.Run("when it is not blank", func(t *testing.T) {
@@ -56,7 +57,7 @@ func TestValidateCategoryID(t *testing.T) {
 
 		item.CategoryID = 1830
 
-		item.Validate()
+		model.Validate(item)
 
 		errs := item.Errors.Get("category_id")
 
@@ -68,11 +69,11 @@ func TestValidateFormula(t *testing.T) {
 	t.Run("when it is blank", func(t *testing.T) {
 		item := NewItem()
 
-		item.Validate()
+		model.Validate(item)
 
 		errs := item.Errors.Get("formula")
 
-		assert.Assert(t, slices.Contains(errs, "can't be blank"))
+		assert.Assert(t, slices.Contains(errs, "required"))
 	})
 
 	t.Run("when it is not blank", func(t *testing.T) {
@@ -80,7 +81,7 @@ func TestValidateFormula(t *testing.T) {
 
 		item.Formula = "42.0 + 69.0"
 
-		item.Validate()
+		model.Validate(item)
 
 		errs := item.Errors.Get("formula")
 
@@ -92,11 +93,11 @@ func TestValidateDate(t *testing.T) {
 	t.Run("when it is blank", func(t *testing.T) {
 		item := NewItem()
 
-		item.Validate()
+		model.Validate(item)
 
 		errs := item.Errors.Get("date")
 
-		assert.Assert(t, slices.Contains(errs, "can't be blank"))
+		assert.Assert(t, slices.Contains(errs, "required"))
 	})
 
 	t.Run("when it is not blank", func(t *testing.T) {
@@ -104,7 +105,7 @@ func TestValidateDate(t *testing.T) {
 
 		item.Date = date.Today()
 
-		item.Validate()
+		model.Validate(item)
 
 		errs := item.Errors.Get("date")
 
@@ -126,7 +127,7 @@ func TestCreateItem(t *testing.T) {
 
 		errs := item.Errors.Get("date")
 
-		assert.Assert(t, slices.Contains(errs, "can't be blank"))
+		assert.Assert(t, slices.Contains(errs, "required"))
 	})
 
 	t.Run("when `CategoryID` is zero", func(t *testing.T) {
@@ -136,7 +137,7 @@ func TestCreateItem(t *testing.T) {
 
 		errs := item.Errors.Get("category_id")
 
-		assert.Assert(t, slices.Contains(errs, "can't be blank"))
+		assert.Assert(t, slices.Contains(errs, "required"))
 	})
 
 	t.Run("when `Formula` is not valid", func(t *testing.T) {
@@ -158,7 +159,7 @@ func TestCreateItem(t *testing.T) {
 
 		errs := item.Errors.Get("formula")
 
-		assert.Assert(t, slices.Contains(errs, "can't be blank"))
+		assert.Assert(t, slices.Contains(errs, "required"))
 	})
 
 	t.Run("when params are valid", func(t *testing.T) {

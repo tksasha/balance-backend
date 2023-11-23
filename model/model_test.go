@@ -1,6 +1,7 @@
 package model_test
 
 import (
+	"slices"
 	"testing"
 
 	"gotest.tools/v3/assert"
@@ -8,9 +9,11 @@ import (
 	"github.com/tksasha/balance/model"
 )
 
-func TestIsValid(t *testing.T) {
-	subject := new(model.Model)
+var (
+	subject = new(model.Model)
+)
 
+func TestIsValid(t *testing.T) {
 	t.Run("when it is valid", func(t *testing.T) {
 		subject.Errors = model.NewErrors()
 
@@ -27,8 +30,6 @@ func TestIsValid(t *testing.T) {
 }
 
 func TestIsNotValid(t *testing.T) {
-	subject := new(model.Model)
-
 	t.Run("when it is valid", func(t *testing.T) {
 		subject.Errors = model.NewErrors()
 
@@ -42,4 +43,31 @@ func TestIsNotValid(t *testing.T) {
 
 		assert.Assert(t, subject.IsNotValid())
 	})
+}
+
+func TestAddError(t *testing.T) {
+	subject.Errors = model.NewErrors()
+
+	subject.AddError("name", "can't be blank")
+
+	messages := subject.Errors.Get("name")
+
+	assert.Assert(t, slices.Contains(messages, "can't be blank"))
+}
+
+func TestValidate(t *testing.T) {
+	subject := struct {
+		model.Model
+		Name string `validate:"required"`
+	}{}
+
+	subject.Errors = model.NewErrors()
+
+	model.Validate(&subject)
+
+	assert.Assert(t, subject.IsNotValid())
+
+	messages := subject.Errors.Get("name")
+
+	assert.Assert(t, slices.Contains(messages, "required"))
 }

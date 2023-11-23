@@ -1,12 +1,18 @@
 package model
 
+import (
+	"github.com/tksasha/balance/utils/strings"
+)
+
 type Errors map[string]map[string][]string
 
 func NewErrors() Errors {
 	return Errors{"errors": {}}
 }
 
-func (errs Errors) Add(attribute string, message string) {
+func (errs Errors) Add(attribute, message string) {
+	attribute = strings.ToSnakeCase(attribute)
+
 	errs["errors"][attribute] = append(errs["errors"][attribute], message)
 }
 

@@ -11,10 +11,10 @@ import (
 type Item struct {
 	model.Model
 	ID          int64     `json:"id"`
-	Date        date.Date `json:"date"`
-	Formula     string    `json:"formula"`
+	Date        date.Date `json:"date"        validate:"required"`
+	Formula     string    `json:"formula"     validate:"required"`
 	Sum         float64   `json:"sum"`
-	CategoryID  int       `json:"category_id"`
+	CategoryID  int       `json:"category_id" validate:"required"`
 	Description string    `json:"description"`
 }
 
@@ -33,24 +33,10 @@ func (item *Item) Calculate() {
 		var err error
 
 		if sum, err = formula.Calculate(item.Formula); err != nil {
-			item.Errors.Add("formula", MsgInvalid)
+			item.Errors.Add("formula", "is not valid")
 		}
 
 		item.Sum = sum
-	}
-}
-
-func (item *Item) Validate() {
-	if item.Date.IsZero() {
-		item.Errors.Add("date", MsgBlank)
-	}
-
-	if item.CategoryID == 0 {
-		item.Errors.Add("category_id", MsgBlank)
-	}
-
-	if item.Formula == "" {
-		item.Errors.Add("formula", MsgBlank)
 	}
 }
 
@@ -64,7 +50,7 @@ func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
 
 	item.Calculate()
 
-	item.Validate()
+	model.Validate(item)
 
 	if item.IsNotValid() {
 		return item, ClientError
@@ -72,7 +58,7 @@ func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
 
 	_ = CreateItemQuery(db, item)
 
-	// ServerError
+	// TODO: ServerError
 
 	return item, nil
 }
