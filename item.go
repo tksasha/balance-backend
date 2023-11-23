@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/tksasha/balance/date"
-	"github.com/tksasha/formula"
+	"github.com/tksasha/balance/formula"
 	"github.com/tksasha/balance/model"
 )
 
