@@ -1,43 +1,45 @@
-package model
+package model_test
 
 import (
 	"testing"
 
 	"gotest.tools/v3/assert"
+
+	"github.com/tksasha/balance/model"
 )
 
 func TestIsValid(t *testing.T) {
-	model := new(Model)
+	subject := new(model.Model)
 
 	t.Run("when it is valid", func(t *testing.T) {
-		model.Errors = NewErrors()
+		subject.Errors = model.NewErrors()
 
-		assert.Assert(t, model.IsValid())
+		assert.Assert(t, subject.IsValid())
 	})
 
 	t.Run("when it is not valid", func(t *testing.T) {
-		model.Errors = NewErrors()
+		subject.Errors = model.NewErrors()
 
-		model.Errors.Add("attribute", "can't be blank")
+		subject.Errors.Add("attribute", "can't be blank")
 
-		assert.Equal(t, model.IsValid(), false)
+		assert.Equal(t, subject.IsValid(), false)
 	})
 }
 
 func TestIsNotValid(t *testing.T) {
-	model := new(Model)
+	subject := new(model.Model)
 
 	t.Run("when it is valid", func(t *testing.T) {
-		model.Errors = NewErrors()
+		subject.Errors = model.NewErrors()
 
-		assert.Equal(t, model.IsNotValid(), false)
+		assert.Equal(t, subject.IsNotValid(), false)
 	})
 
 	t.Run("when it is not valid", func(t *testing.T) {
-		model.Errors = NewErrors()
+		subject.Errors = model.NewErrors()
 
-		model.Errors.Add("attribute", "is not valid")
+		subject.Errors.Add("attribute", "is not valid")
 
-		assert.Assert(t, model.IsNotValid())
+		assert.Assert(t, subject.IsNotValid())
 	})
 }
