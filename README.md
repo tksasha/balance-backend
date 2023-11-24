@@ -1,4 +1,5 @@
-# Backend for Personal Finances Accounting System (Balance)
+# Backend for Balance
+### Balance is Personal Finance Accounting System
 
 ## Useful commands
 - `make` or `make test` run unit tests
