@@ -3,7 +3,7 @@ all: test
 
 .PHONY: test
 test:
-	@GOENV=test go test
+	GOENV=test go test
 
 .PHONY: run
 run:
@@ -15,3 +15,9 @@ run:
 		item.go \
 		item_params.go \
 		main.go \
+
+.PHONY: db
+db:
+	sqlite3 db/development.sqlite3 '.schema --indent --nosys' > db/schema.sql
+	rm -rf db/test.sqlite3
+	sqlite3 db/test.sqlite3 '.read db/schema.sql'
