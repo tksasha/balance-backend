@@ -16,6 +16,18 @@ run:
 		item_params.go \
 		main.go \
 
+.PHONY: build
+build:
+	@go build \
+		-o balance \
+		check_content_type.go \
+		create_item_handler.go \
+		create_item_query.go \
+		db.go \
+		item.go \
+		item_params.go \
+		main.go \
+
 .PHONY: db
 db:
 	sqlite3 db/development.sqlite3 '.schema --indent --nosys' > db/schema.sql
