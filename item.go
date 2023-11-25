@@ -56,9 +56,9 @@ func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
 		return item, ClientError
 	}
 
-	_ = CreateItemQuery(db, item)
-
-	// TODO: ServerError
+	if err := CreateItemQuery(db, item); err != nil {
+		return nil, err
+	}
 
 	return item, nil
 }

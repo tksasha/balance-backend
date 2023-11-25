@@ -1,9 +1,23 @@
 .PHONY: all
 all: test
 
-.PHONY: test
-test:
+.PHONY: tests
+tests:
 	GOENV=test go test
+
+.PHONY: t
+t: tests
+
+.PHONY: integrations
+integrations: build
+	@GOENV=test ./balance &
+	@sleep 1
+	@cd tests && bundle && rspec spec/items/create_spec.rb
+	@killall balance
+	@go clean
+
+.PHONY: i
+i: integrations
 
 .PHONY: run
 run:
@@ -15,6 +29,9 @@ run:
 		item.go \
 		item_params.go \
 		main.go \
+
+.PHONY: r
+r: run
 
 .PHONY: build
 build:
