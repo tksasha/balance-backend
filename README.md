@@ -1,5 +1,3 @@
-[![Go](https://github.com/tksasha/balance-backend/actions/workflows/go.yml/badge.svg)](https://github.com/tksasha/balance-backend/actions/workflows/go.yml)
-
 # Backend for Balance
 ```
 Balance is Personal Finance Accounting System
