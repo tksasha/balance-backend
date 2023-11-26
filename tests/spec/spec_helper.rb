@@ -30,10 +30,12 @@ def content_type
 end
 
 def body
-  subject.body.symbolize_keys
+  subject.body
 end
 
-alias responsed body
+def responsed
+  body.symbolize_keys
+end
 
 def db
   @db ||= SQLite3::Database.new('../db/test.sqlite3')

@@ -24,6 +24,7 @@ func main() {
 	app.Use(checkContentType)
 
 	app.Post("/items", CreateItemHandler)
+	app.Get("/items/:id", GetItemHandler)
 
 	log.Fatal(app.Listen(":3000"))
 }

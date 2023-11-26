@@ -90,7 +90,6 @@ GEM
       rubocop-factory_bot (~> 2.22)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
-    sqlite3 (1.6.8-arm64-darwin)
     stringio (3.0.9)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -107,7 +106,6 @@ DEPENDENCIES
   rubocop
   rubocop-performance
   rubocop-rspec
-  sqlite3
 
 BUNDLED WITH
    2.4.19

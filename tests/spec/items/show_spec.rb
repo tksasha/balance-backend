@@ -1,14 +1,38 @@
 # frozen_string_literal: true
 
 RSpec.describe 'GetItem' do
+  before do
+    db.execute('DELETE FROM items')
+
+    sql = <<-SQL
+      INSERT INTO items(id, date, formula, sum, category_id, description)
+      VALUES(1512, "2023-11-26", "42.1 + 69.01", 111.11, 2919, "lorem ipsum ...")
+    SQL
+
+    db.execute(sql)
+  end
+
+  after { db.execute('DELETE FROM items') }
+
   context 'when everything is fine' do
-    subject { connection.get('/items/42') }
+    subject { connection.get('/items/1512') }
+
+    let(:expected) do
+      {
+        id: 1512,
+        date: '2023-11-26',
+        sum: 111.11,
+        category_id: 2919,
+        formula: '42.1 + 69.01',
+        description: 'lorem ipsum ...'
+      }
+    end
 
     it { expect(status).to eq 200 }
 
     it { expect(content_type).to eq 'application/json' }
 
-    it { expect(body).to eq('id' => 42, 'name' => 'Pretty Red Dress') }
+    it { expect(responsed).to eq expected }
   end
 
   context 'when item is not found' do
@@ -17,17 +41,13 @@ RSpec.describe 'GetItem' do
     it { expect(status).to eq 404 }
 
     it { expect(content_type).to eq 'application/json' }
-
-    it { expect(body).to eq 'Not Found' }
   end
 
-  context 'when id is invalid' do
-    subject { connection.get('/items/invalid') }
+  context 'when id is a string' do
+    subject { connection.get('/items/string') }
 
-    it { expect(status).to eq 422 }
+    it { expect(status).to eq 404 }
 
     it { expect(content_type).to eq 'application/json' }
-
-    it { expect(body).to eq 'Unprocessable Entity' }
   end
 end

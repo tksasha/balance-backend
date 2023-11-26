@@ -25,6 +25,8 @@ RSpec.describe 'CreateItem' do
 
   before { db.execute('DELETE FROM items') }
 
+  after { db.execute('DELETE FROM items') }
+
   context 'when params are valid' do
     it { expect(status).to eq 201 }
 

@@ -1,18 +1,18 @@
 .PHONY: all
-all: test
+all: tests
 
 .PHONY: tests
 tests:
-	GOENV=test go test
+	@GOENV=test go test
 
 .PHONY: t
 t: tests
 
 .PHONY: integrations
-integrations: build
+integrations: build db
 	@GOENV=test ./balance &
 	@sleep 1
-	@cd tests && bundle && rspec spec/items/create_spec.rb
+	@cd tests && bundle && rspec spec/items/create_spec.rb spec/items/show_spec.rb
 	@killall balance
 	@go clean
 
@@ -22,13 +22,7 @@ i: integrations
 .PHONY: run
 run:
 	@go run \
-		check_content_type.go \
-		create_item_handler.go \
-		create_item_query.go \
-		db.go \
-		item.go \
-		item_params.go \
-		main.go \
+		$(filter-out $(wildcard *_test.go), $(wildcard *.go))
 
 .PHONY: r
 r: run
@@ -37,16 +31,13 @@ r: run
 build:
 	@go build \
 		-o balance \
-		check_content_type.go \
-		create_item_handler.go \
-		create_item_query.go \
-		db.go \
-		item.go \
-		item_params.go \
-		main.go \
+		$(filter-out $(wildcard *_test.go), $(wildcard *.go))
+
+.PHONY: b
+b: build
 
 .PHONY: db
 db:
-	sqlite3 db/development.sqlite3 '.schema --indent --nosys' > db/schema.sql
-	rm -rf db/test.sqlite3
-	sqlite3 db/test.sqlite3 '.read db/schema.sql'
+	@sqlite3 db/development.sqlite3 '.schema --indent --nosys' > db/schema.sql
+	@rm -rf db/test.sqlite3
+	@sqlite3 db/test.sqlite3 '.read db/schema.sql'
