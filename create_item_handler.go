@@ -8,8 +8,6 @@ import (
 )
 
 func CreateItemHandler(ctx *fasthttp.RequestCtx) {
-	ctx.SetContentType(MIMEApplicationJSON) // TODO: move to middleware
-
 	db := Open()
 
 	defer Close(db)
