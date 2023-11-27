@@ -3,36 +3,46 @@ package main
 import (
 	"database/sql"
 	"errors"
+	"strconv"
+	"encoding/json"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/valyala/fasthttp"
 )
 
-func GetItemHandler(c *fiber.Ctx) error {
+func GetItemHandler(ctx *fasthttp.RequestCtx) {
+	ctx.SetContentType(MIMEApplicationJSON) // TODO: move to middleware
+
 	db := Open()
 
 	defer Close(db)
 
-	id, err := c.ParamsInt("id")
+	id, err := strconv.Atoi(ctx.UserValue("id").(string))
 	if err != nil {
-		return c.
-			Status(fiber.StatusNotFound).
-			JSON("")
+		ctx.SetStatusCode(StatusNotFound)
+
+		json.NewEncoder(ctx).Encode("")
+
+		return
 	}
 
 	item, err := GetItemQuery(db, id)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return c.
-				Status(fiber.StatusNotFound).
-				JSON("")
+			ctx.SetStatusCode(StatusNotFound)
+
+			json.NewEncoder(ctx).Encode("")
+
+			return
 		} else {
-			return c.
-				Status(fiber.StatusInternalServerError).
-				JSON(err)
+			ctx.SetStatusCode(StatusInternalServerError)
+
+			json.NewEncoder(ctx).Encode(err)
+
+			return
 		}
 	}
 
-	return c.
-		Status(fiber.StatusOK).
-		JSON(item)
+	ctx.SetStatusCode(StatusOK)
+
+	json.NewEncoder(ctx).Encode(item)
 }

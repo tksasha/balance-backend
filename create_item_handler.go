@@ -1,38 +1,43 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/valyala/fasthttp"
 )
 
-func CreateItemHandler(c *fiber.Ctx) error {
+func CreateItemHandler(ctx *fasthttp.RequestCtx) {
+	ctx.SetContentType(MIMEApplicationJSON) // TODO: move to middleware
+
 	db := Open()
 
 	defer Close(db)
 
 	params := new(ItemParams)
 
-	if err := c.BodyParser(params); err != nil {
-		return c.
-			Status(fiber.StatusUnprocessableEntity).
-			JSON(fiber.ErrUnprocessableEntity)
+	if err := json.Unmarshal(ctx.PostBody(), &params); err != nil {
+		ctx.SetStatusCode(StatusUnprocessableEntity)
+
+		json.NewEncoder(ctx).Encode(err)
+
+		return
 	}
 
 	item, err := CreateItem(db, params)
 	if err == nil {
-		return c.
-			Status(fiber.StatusCreated).
-			JSON(item)
+		ctx.SetStatusCode(StatusCreated)
+
+		json.NewEncoder(ctx).Encode(&item)
 	} else {
 		if errors.Is(err, ClientError) {
-			return c.
-				Status(fiber.StatusUnprocessableEntity).
-				JSON(item.Errors)
+			ctx.SetStatusCode(StatusUnprocessableEntity)
+
+			json.NewEncoder(ctx).Encode(item.Errors)
 		} else {
-			return c.
-				Status(fiber.StatusInternalServerError).
-				JSON(err)
+			ctx.SetStatusCode(StatusInternalServerError)
+
+			json.NewEncoder(ctx).Encode(err)
 		}
 	}
 }

@@ -18,6 +18,13 @@ type Item struct {
 	Description string    `json:"description"`
 }
 
+type ItemParams struct {
+	Date        date.Date `json:"date"`
+	CategoryID  int       `json:"category_id"`
+	Formula     string    `json:"formula"`
+	Description string    `json:"description"`
+}
+
 func NewItem() (item *Item) {
 	item = new(Item)
 
@@ -56,7 +63,7 @@ func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
 		return item, ClientError
 	}
 
-	if err := CreateItemQuery(db, item); err != nil {
+	if err := CreateItemQuery(db, item); err != nil { // TODO: when error is Foreign Key Constraint render ClientError
 		return nil, err
 	}
 

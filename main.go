@@ -3,10 +3,9 @@ package main
 import (
 	"errors"
 	"log"
-	"os"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/fasthttp/router"
+	"github.com/valyala/fasthttp"
 )
 
 var (
@@ -14,17 +13,21 @@ var (
 	ServerError = errors.New("ServerError")
 )
 
+const (
+	StatusOK                  = 200 // 200
+	StatusCreated             = 201
+	StatusNotFound            = 404 // 400
+	StatusUnprocessableEntity = 422
+	StatusInternalServerError = 500 // 500
+
+	MIMEApplicationJSON = "application/json"
+)
+
 func main() {
-	app := fiber.New()
+	r := router.New()
 
-	if os.Getenv("GOENV") != "test" {
-		app.Use(logger.New())
-	}
+	r.POST("/items", CreateItemHandler)
+	r.GET("/items/{id}", GetItemHandler)
 
-	app.Use(checkContentType)
-
-	app.Post("/items", CreateItemHandler)
-	app.Get("/items/:id", GetItemHandler)
-
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(fasthttp.ListenAndServe(":3000", r.Handler))
 }
