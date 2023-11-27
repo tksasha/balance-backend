@@ -7,35 +7,38 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+func parseParams(body []byte) (*ItemParams, error) {
+	params := new(ItemParams)
+
+	if err := json.Unmarshal(body, params); err != nil {
+		return nil, err
+	}
+
+	return params, nil
+}
+
 func CreateItemHandler(ctx *fasthttp.RequestCtx) {
 	db := Open()
 
 	defer Close(db)
 
-	params := new(ItemParams)
-
-	if err := json.Unmarshal(ctx.PostBody(), &params); err != nil {
-		ctx.SetStatusCode(StatusUnprocessableEntity)
-
-		json.NewEncoder(ctx).Encode(err)
+	params, err := parseParams(ctx.PostBody())
+	if err != nil {
+		UnprocessableEntity(ctx, err)
 
 		return
 	}
 
 	item, err := CreateItem(db, params)
 	if err == nil {
-		ctx.SetStatusCode(StatusCreated)
+		Created(ctx, &item)
 
-		json.NewEncoder(ctx).Encode(&item)
+		return
+	}
+
+	if errors.Is(err, ClientError) {
+		UnprocessableEntity(ctx, item.Errors)
 	} else {
-		if errors.Is(err, ClientError) {
-			ctx.SetStatusCode(StatusUnprocessableEntity)
-
-			json.NewEncoder(ctx).Encode(item.Errors)
-		} else {
-			ctx.SetStatusCode(StatusInternalServerError)
-
-			json.NewEncoder(ctx).Encode(err)
-		}
+		InternalServerError(ctx, err)
 	}
 }

@@ -2,9 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"strconv"
-	"encoding/json"
 
 	"github.com/valyala/fasthttp"
 )
@@ -16,9 +16,7 @@ func GetItemHandler(ctx *fasthttp.RequestCtx) {
 
 	id, err := strconv.Atoi(ctx.UserValue("id").(string))
 	if err != nil {
-		ctx.SetStatusCode(StatusNotFound)
-
-		json.NewEncoder(ctx).Encode("")
+		NotFound(ctx, "")
 
 		return
 	}
@@ -26,9 +24,7 @@ func GetItemHandler(ctx *fasthttp.RequestCtx) {
 	item, err := GetItemQuery(db, id)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			ctx.SetStatusCode(StatusNotFound)
-
-			json.NewEncoder(ctx).Encode("")
+			NotFound(ctx, "")
 
 			return
 		} else {
@@ -40,7 +36,5 @@ func GetItemHandler(ctx *fasthttp.RequestCtx) {
 		}
 	}
 
-	ctx.SetStatusCode(StatusOK)
-
-	json.NewEncoder(ctx).Encode(item)
+	OK(ctx, &item)
 }

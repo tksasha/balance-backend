@@ -12,7 +12,7 @@ func NewRouter() func(ctx *fasthttp.RequestCtx) {
 	r.GET("/items/{id}", GetItemHandler)
 
 	return func(ctx *fasthttp.RequestCtx) {
-		ctx.SetContentType(MIMEApplicationJSON)
+		// you can place your middlewares here
 
 		r.Handler(ctx)
 	}
