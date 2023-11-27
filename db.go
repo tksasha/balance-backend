@@ -15,6 +15,10 @@ func Open() (db *sql.DB) {
 		log.Fatal(err)
 	}
 
+	if _, err = db.Exec("PRAGMA foreign_keys = ON"); err != nil {
+		log.Fatal(err)
+	}
+
 	return
 }
 
