@@ -59,26 +59,13 @@ func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
 
 	model.Validate(item)
 
-	if item.IsNotValid() {
+	if !item.IsValid() {
 		return item, ClientError
 	}
 
 	if err := CreateItemQuery(db, item); err != nil { // TODO: when error is Foreign Key Constraint render ClientError
-		return nil, err
+		return nil, err // TODO: prettify this error
 	}
 
 	return item, nil
 }
-
-// func FindItem(db *sql.DB, id int64) *Item {
-// 	item := NewItem(db)
-
-// 	row := db.QueryRow(`SELECT id, date FROM items WHERE id = ?`, id)
-
-// 	if err := row.Scan(&item.ID, &item.Date); err != nil {
-// 		// panic(err)
-// 		return nil
-// 	}
-
-// 	return item
-// }

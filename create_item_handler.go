@@ -11,7 +11,7 @@ func parseParams(body []byte) (*ItemParams, error) {
 	params := new(ItemParams)
 
 	if err := json.Unmarshal(body, params); err != nil {
-		return nil, err
+		return nil, err // TODO: prettify this error
 	}
 
 	return params, nil
@@ -24,7 +24,7 @@ func CreateItemHandler(ctx *fasthttp.RequestCtx) {
 
 	params, err := parseParams(ctx.PostBody())
 	if err != nil {
-		UnprocessableEntity(ctx, err)
+		UnprocessableEntity(ctx, err) // TODO: prettify this error
 
 		return
 	}
@@ -39,6 +39,6 @@ func CreateItemHandler(ctx *fasthttp.RequestCtx) {
 	if errors.Is(err, ClientError) {
 		UnprocessableEntity(ctx, item.Errors)
 	} else {
-		InternalServerError(ctx, err)
+		InternalServerError(ctx, err) // TODO: prettify this error
 	}
 }

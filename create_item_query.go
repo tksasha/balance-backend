@@ -12,14 +12,14 @@ func CreateItemQuery(db *sql.DB, item *Item) error {
 			(?, ?, ?, ?, ?)
 	`
 
-	res, err := db.Exec(sql, item.Date.String(), item.Formula, item.Sum, item.CategoryID, item.Description)
+	res, err := db.Exec(sql, item.Date.String(), item.Formula, item.Sum, item.CategoryID, item.Description) // TODO: do not forget about timestamps
 	if err != nil {
-		return err
+		return err // TODO: prettify this error
 	}
 
 	id, err := res.LastInsertId()
 	if err != nil {
-		return err
+		return err // TODO: prettify this error
 	}
 
 	item.ID = id
