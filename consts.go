@@ -7,6 +7,8 @@ import (
 var (
 	ClientError = errors.New("ClientError")
 	ServerError = errors.New("ServerError")
+
+	RecordNotFoundError = errors.New("RecordNotFoundError")
 )
 
 const (
