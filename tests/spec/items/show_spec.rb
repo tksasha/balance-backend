@@ -26,43 +26,19 @@ RSpec.describe 'GetItem' do
     context 'when item is not found' do
       let(:response) { connection.get('/items/0') }
 
-      let(:expected) do
-        {
-          errors: [
-            {
-              title: 'not found',
-              detail: 'Resource not found',
-              source: { parameter: 'id' }
-            }
-          ]
-        }
-      end
-
       it { expect(status).to eq(:not_found) }
 
-      it { expect(body).to eq(expected) }
+      it { expect(body).to eq errors: { base: ['resource not found'] } }
     end
 
     context 'when id is a string' do
       let(:response) { connection.get('/items/string') }
 
-      let(:expected) do
-        {
-          errors: [
-            {
-              title: 'invalid',
-              detail: 'Is not valid',
-              source: { parameter: 'id' }
-            }
-          ]
-        }
-      end
-
       it_behaves_like 'show.json'
 
       it { expect(status).to eq(:bad_request) }
 
-      it { expect(body).to eq(expected) }
+      it { expect(body).to eq errors: { id: ['is invalid'] } }
     end
   end
 end
