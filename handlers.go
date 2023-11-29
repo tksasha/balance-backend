@@ -7,6 +7,8 @@ import (
 	"strconv"
 
 	"github.com/valyala/fasthttp"
+
+	"github.com/tksasha/balance/jsonapi"
 )
 
 func parseParams(body []byte) (*ItemParams, error) {
@@ -49,26 +51,25 @@ func GetItemHandler(db *sql.DB) func(*fasthttp.RequestCtx) {
 	return func(ctx *fasthttp.RequestCtx) {
 		id, err := strconv.Atoi(ctx.UserValue("id").(string))
 		if err != nil {
-			JSON(StatusNotFound, ctx, "")
+			JSON(StatusBadRequest, ctx, jsonapi.NewErrors("parameter", "id", ErrInvalid))
 
 			return
 		}
 
 		item, err := GetItemQuery(db, id)
+
+		if errors.Is(err, RecordNotFoundError) {
+			JSON(StatusNotFound, ctx, jsonapi.NewErrors("parameter", "id", ErrNotFound))
+
+			return
+		}
+
 		if err != nil {
-			if errors.Is(err, RecordNotFoundError) {
-				JSON(StatusNotFound, ctx, "")
+			JSON(StatusInternalServerError, ctx, jsonapi.NewErrors(ErrServer))
 
-				return
-			} else {
-				JSON(StatusInternalServerError, ctx, err)
-
-				return
-			}
+			return
 		}
 
 		JSON(StatusOK, ctx, &item)
-
-		return
 	}
 }

@@ -6,7 +6,7 @@ require 'faraday'
 def connection
   url = 'http://localhost:3000'
 
-  headers = { 'Content-Type': 'application/json' }
+  headers = { 'Content-Type': 'application/vnd.api+json' }
 
   Faraday.new(url:, headers:) do |builder|
     builder.request :json
@@ -14,18 +14,15 @@ def connection
   end
 end
 
-def status
-  subject.status
-end
-
-def content_type
-  subject.headers[:content_type]
-end
-
 def body
-  subject.body
+  response&.body.presence&.deep_symbolize_keys || {}
 end
 
-def responsed
-  body.symbolize_keys
+def status
+  {
+    200 => :ok,
+    201 => :created,
+    400 => :bad_request,
+    404 => :not_found
+  }[response.status]
 end

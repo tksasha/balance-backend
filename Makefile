@@ -27,6 +27,10 @@ run:
 .PHONY: r
 r: run
 
+.PHONY: tr
+tr:
+	GOENV=test make run
+
 .PHONY: build
 build:
 	@go build \

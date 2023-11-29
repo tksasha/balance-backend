@@ -1,42 +1,68 @@
 # frozen_string_literal: true
 
 RSpec.describe 'GetItem' do
-  context 'when everything is fine' do
-    subject { connection.get("/items/#{ item.id }") }
+  describe 'GET /items/{id}.json' do
+    context 'when item is exist' do
+      let(:response) { connection.get("/items/#{ item.id }") }
 
-    let!(:item) { create(:item) }
+      let!(:item) { create(:item) }
 
-    let(:expected) do
-      {
-        id: item.id,
-        date: '2023-11-26',
-        sum: 111.11,
-        category_id: item.category_id,
-        formula: '42.1 + 69.01',
-        description: 'lorem ipsum ...'
-      }
+      let(:expected) do
+        {
+          id: item.id,
+          date: '2023-11-26',
+          sum: 111.11,
+          category_id: item.category_id,
+          formula: '42.1 + 69.01',
+          description: 'lorem ipsum ...'
+        }
+      end
+
+      it { expect(status).to eq(:ok) }
+
+      it { expect(body).to eq(expected) }
     end
 
-    it { expect(status).to eq 200 }
+    context 'when item is not found' do
+      let(:response) { connection.get('/items/0') }
 
-    it { expect(content_type).to eq 'application/json' }
+      let(:expected) do
+        {
+          errors: [
+            {
+              title: 'not found',
+              detail: 'Resource not found',
+              source: { parameter: 'id' }
+            }
+          ]
+        }
+      end
 
-    it { expect(responsed).to eq expected }
-  end
+      it { expect(status).to eq(:not_found) }
 
-  context 'when item is not found' do
-    subject { connection.get('/items/0') }
+      it { expect(body).to eq(expected) }
+    end
 
-    it { expect(status).to eq 404 }
+    context 'when id is a string' do
+      let(:response) { connection.get('/items/string') }
 
-    it { expect(content_type).to eq 'application/json' }
-  end
+      let(:expected) do
+        {
+          errors: [
+            {
+              title: 'invalid',
+              detail: 'Is not valid',
+              source: { parameter: 'id' }
+            }
+          ]
+        }
+      end
 
-  context 'when id is a string' do
-    subject { connection.get('/items/string') }
+      it_behaves_like 'show.json'
 
-    it { expect(status).to eq 404 }
+      it { expect(status).to eq(:bad_request) }
 
-    it { expect(content_type).to eq 'application/json' }
+      it { expect(body).to eq(expected) }
+    end
   end
 end

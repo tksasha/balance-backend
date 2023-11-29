@@ -14,9 +14,14 @@ var (
 const (
 	StatusOK                  = 200 // 200
 	StatusCreated             = 201
-	StatusNotFound            = 404 // 400
+	StatusBadRequest          = 400 // 400
+	StatusNotFound            = 404
 	StatusUnprocessableEntity = 422
 	StatusInternalServerError = 500 // 500
 
-	MIMEApplicationJSON = "application/json"
+	MIMEApplicationJSON = "application/vnd.api+json"
+
+	ErrInvalid  = "invalid"
+	ErrNotFound = "not found"
+	ErrServer   = "server error"
 )
