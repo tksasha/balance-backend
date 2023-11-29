@@ -16,10 +16,6 @@ func (model *Model) IsValid() bool {
 	return model.Errors.IsEmpty()
 }
 
-func (model *Model) IsNotValid() bool {
-	return !model.Errors.IsEmpty()
-}
-
 func (model *Model) AddError(attribute, message string) {
 	model.Errors.Add(attribute, message)
 }

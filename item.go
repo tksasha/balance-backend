@@ -10,7 +10,7 @@ import (
 
 type Item struct {
 	model.Model
-	ID          int64     `json:"id"`
+	ID          int       `json:"id"`
 	Date        date.Date `json:"date"        validate:"required"`
 	Formula     string    `json:"formula"     validate:"required"`
 	Sum         float64   `json:"sum"`
@@ -18,54 +18,76 @@ type Item struct {
 	Description string    `json:"description"`
 }
 
-type ItemParams struct {
+type itemParams struct {
 	Date        date.Date `json:"date"`
 	CategoryID  int       `json:"category_id"`
 	Formula     string    `json:"formula"`
 	Description string    `json:"description"`
 }
 
-func NewItem() (item *Item) {
-	item = new(Item)
-
-	item.Errors = model.NewErrors()
-
-	return
+func NewItem() *Item {
+	return &Item{model.Model{Errors: model.NewErrors()}, 0, date.New(1, 1, 1), "", 0.0, 0, ""}
 }
 
-func (item *Item) Calculate() {
-	if len(item.Formula) > 0 {
-		sum := 0.0
-
-		var err error
-
-		if sum, err = formula.Calculate(item.Formula); err != nil {
-			item.Errors.Add("formula", "is not valid")
-		}
-
-		item.Sum = sum
+func BuildItem(Date date.Date, Formula string, CategoryID int, Description string) *Item {
+	return &Item{
+		model.Model{Errors: model.NewErrors()},
+		0,
+		Date,
+		Formula,
+		0.0,
+		CategoryID,
+		Description,
 	}
 }
 
-func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
-	item := NewItem()
+func (item *Item) calculate() {
+	if len(item.Formula) == 0 {
+		return
+	}
 
-	item.Date = params.Date
-	item.CategoryID = params.CategoryID
-	item.Formula = params.Formula
-	item.Description = params.Description
+	var err error
 
-	item.Calculate()
+	item.Sum, err = formula.Calculate(item.Formula)
+	if err != nil {
+		item.Errors.Add("formula", "is not valid") // TODO: move it to constant
+	}
+}
+
+func CreateItem(db *sql.DB, params *itemParams) (*Item, error) {
+	item := BuildItem(
+		params.Date,
+		params.Formula,
+		params.CategoryID,
+		params.Description,
+	)
+
+	item.calculate()
 
 	model.Validate(item)
-
 	if !item.IsValid() {
-		return item, ClientError
+		return item, RecordInvalidError
 	}
 
-	if err := CreateItemQuery(db, item); err != nil { // TODO: when error is Foreign Key Constraint render ClientError
-		return nil, err // TODO: prettify this error
+	sql := `
+		INSERT INTO
+			items(date, formula, sum, category_id, description)
+		VALUES
+			(?, ?, ?, ?, ?)
+	`
+
+	// TODO: do not forget about timestamps
+	res, err := db.Exec(sql, item.Date.String(), item.Formula, item.Sum, item.CategoryID, item.Description)
+	if err != nil {
+		return nil, InternalServerError // TODO: provide more details (Foreign Key Error)
 	}
+
+	id, err := res.LastInsertId()
+	if err != nil {
+		return nil, InternalServerError
+	}
+
+	item.ID = int(id)
 
 	return item, nil
 }

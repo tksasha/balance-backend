@@ -6,7 +6,7 @@ require 'faraday'
 def connection
   url = 'http://localhost:3000'
 
-  headers = { 'Content-Type': 'application/vnd.api+json' }
+  headers = { 'Content-Type': 'application/json' }
 
   Faraday.new(url:, headers:) do |builder|
     builder.request :json

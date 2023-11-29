@@ -33,7 +33,7 @@ func TestIsNotValid(t *testing.T) {
 	t.Run("when it is valid", func(t *testing.T) {
 		subject.Errors = model.NewErrors()
 
-		assert.Equal(t, subject.IsNotValid(), false)
+		assert.Equal(t, !subject.IsValid(), false)
 	})
 
 	t.Run("when it is not valid", func(t *testing.T) {
@@ -41,7 +41,7 @@ func TestIsNotValid(t *testing.T) {
 
 		subject.Errors.Add("attribute", "is not valid")
 
-		assert.Assert(t, subject.IsNotValid())
+		assert.Assert(t, !subject.IsValid())
 	})
 }
 
@@ -65,7 +65,7 @@ func TestValidate(t *testing.T) {
 
 	model.Validate(&subject)
 
-	assert.Assert(t, subject.IsNotValid())
+	assert.Assert(t, !subject.IsValid())
 
 	messages := subject.Errors["errors"]["name"]
 

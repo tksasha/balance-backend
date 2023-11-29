@@ -5,10 +5,12 @@ import (
 )
 
 var (
-	ClientError = errors.New("ClientError")
-	ServerError = errors.New("ServerError")
+	ClientError = errors.New("ClientError") // TODO: DELME
+	ServerError = errors.New("ServerError") // TODO: DELME
 
 	RecordNotFoundError = errors.New("RecordNotFoundError")
+	RecordInvalidError  = errors.New("RecordInvalidError")
+	InternalServerError = errors.New("InternalServerError")
 )
 
 const (
@@ -19,9 +21,5 @@ const (
 	StatusUnprocessableEntity = 422
 	StatusInternalServerError = 500 // 500
 
-	MIMEApplicationJSON = "application/vnd.api+json"
-
-	ErrInvalid  = "invalid"
-	ErrNotFound = "not found"
-	ErrServer   = "server error"
+	MIMEApplicationJSON = "application/json"
 )
