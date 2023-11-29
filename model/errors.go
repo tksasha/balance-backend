@@ -6,8 +6,14 @@ import (
 
 type Errors map[string]map[string][]string
 
-func NewErrors() Errors {
-	return Errors{"errors": {}}
+func NewErrors(args ...string) Errors {
+	errs := Errors{"errors": {}}
+
+	if len(args) == 2 {
+		errs.Add(args[0], args[1])
+	}
+
+	return errs
 }
 
 func (errs Errors) Add(attribute, message string) {
@@ -16,18 +22,10 @@ func (errs Errors) Add(attribute, message string) {
 	errs["errors"][attribute] = append(errs["errors"][attribute], message)
 }
 
-func (errs Errors) Get(attribute string) (messages []string) {
-	return errs["errors"][attribute]
-}
-
-func (errs Errors) Size() int {
-	return len(errs["errors"])
-}
-
 func (errs Errors) IsEmpty() bool {
-	return errs.Size() == 0
+	return errs.size() == 0
 }
 
-func (errs Errors) IsNotEmpty() bool {
-	return errs.Size() > 0
+func (errs Errors) size() int {
+	return len(errs["errors"])
 }

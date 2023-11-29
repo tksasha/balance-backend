@@ -50,7 +50,7 @@ func TestAddError(t *testing.T) {
 
 	subject.AddError("name", "can't be blank")
 
-	messages := subject.Errors.Get("name")
+	messages := subject.Errors["errors"]["name"]
 
 	assert.Assert(t, slices.Contains(messages, "can't be blank"))
 }
@@ -67,7 +67,7 @@ func TestValidate(t *testing.T) {
 
 	assert.Assert(t, subject.IsNotValid())
 
-	messages := subject.Errors.Get("name")
+	messages := subject.Errors["errors"]["name"]
 
 	assert.Assert(t, slices.Contains(messages, "required"))
 }

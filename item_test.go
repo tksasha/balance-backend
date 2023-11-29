@@ -35,7 +35,7 @@ func TestCalculateItemSum(t *testing.T) {
 
 		item.Calculate()
 
-		errs := item.Errors.Get("formula")
+		errs := item.Errors["errors"]["formula"]
 
 		assert.Equal(t, strings.Join(errs, ", "), "is not valid")
 	})
@@ -47,7 +47,7 @@ func TestValidateCategoryID(t *testing.T) {
 
 		model.Validate(item)
 
-		errs := item.Errors.Get("category_id")
+		errs := item.Errors["errors"]["category_id"]
 
 		assert.Assert(t, slices.Contains(errs, "required"))
 	})
@@ -59,7 +59,7 @@ func TestValidateCategoryID(t *testing.T) {
 
 		model.Validate(item)
 
-		errs := item.Errors.Get("category_id")
+		errs := item.Errors["errors"]["category_id"]
 
 		assert.Equal(t, strings.Join(errs, ", "), "")
 	})
@@ -71,7 +71,7 @@ func TestValidateFormula(t *testing.T) {
 
 		model.Validate(item)
 
-		errs := item.Errors.Get("formula")
+		errs := item.Errors["errors"]["formula"]
 
 		assert.Assert(t, slices.Contains(errs, "required"))
 	})
@@ -83,7 +83,7 @@ func TestValidateFormula(t *testing.T) {
 
 		model.Validate(item)
 
-		errs := item.Errors.Get("formula")
+		errs := item.Errors["errors"]["formula"]
 
 		assert.Equal(t, strings.Join(errs, ", "), "")
 	})
@@ -95,7 +95,7 @@ func TestValidateDate(t *testing.T) {
 
 		model.Validate(item)
 
-		errs := item.Errors.Get("date")
+		errs := item.Errors["errors"]["date"]
 
 		assert.Assert(t, slices.Contains(errs, "required"))
 	})
@@ -107,9 +107,9 @@ func TestValidateDate(t *testing.T) {
 
 		model.Validate(item)
 
-		errs := item.Errors.Get("date")
+		errs := item.Errors["errors"]["date"]
 
-		assert.Equal(t, strings.Join(errs, ", "), "")
+		assert.Assert(t, slices.Equal(errs, []string{}))
 	})
 }
 
@@ -125,7 +125,7 @@ func TestCreateItem(t *testing.T) {
 
 		assert.ErrorIs(t, err, ClientError)
 
-		errs := item.Errors.Get("date")
+		errs := item.Errors["errors"]["date"]
 
 		assert.Assert(t, slices.Contains(errs, "required"))
 	})
@@ -135,7 +135,7 @@ func TestCreateItem(t *testing.T) {
 
 		assert.ErrorIs(t, err, ClientError)
 
-		errs := item.Errors.Get("category_id")
+		errs := item.Errors["errors"]["category_id"]
 
 		assert.Assert(t, slices.Contains(errs, "required"))
 	})
@@ -147,7 +147,7 @@ func TestCreateItem(t *testing.T) {
 
 		assert.ErrorIs(t, err, ClientError)
 
-		errs := item.Errors.Get("formula")
+		errs := item.Errors["errors"]["formula"]
 
 		assert.Assert(t, slices.Contains(errs, "is not valid"))
 	})
@@ -157,7 +157,7 @@ func TestCreateItem(t *testing.T) {
 
 		assert.ErrorIs(t, err, ClientError)
 
-		errs := item.Errors.Get("formula")
+		errs := item.Errors["errors"]["formula"]
 
 		assert.Assert(t, slices.Contains(errs, "required"))
 	})

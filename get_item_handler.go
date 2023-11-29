@@ -13,11 +13,7 @@ func GetItemHandler(db *sql.DB) func(*fasthttp.RequestCtx) {
 	return func(ctx *fasthttp.RequestCtx) {
 		id, err := strconv.Atoi(ctx.UserValue("id").(string))
 		if err != nil {
-			errs := model.NewErrors()
-
-			errs.Add("id", "is invalid")
-
-			JSON(StatusBadRequest, ctx, errs)
+			JSON(StatusBadRequest, ctx, model.NewErrors("id", "is invalid"))
 
 			return
 		}
@@ -25,21 +21,13 @@ func GetItemHandler(db *sql.DB) func(*fasthttp.RequestCtx) {
 		item, err := GetItemQuery(db, id)
 
 		if errors.Is(err, RecordNotFoundError) {
-			errs := model.NewErrors()
-
-			errs.Add("base", "resource not found")
-
-			JSON(StatusNotFound, ctx, errs)
+			JSON(StatusNotFound, ctx, model.NewErrors("base", "resource not found"))
 
 			return
 		}
 
 		if err != nil {
-			errs := model.NewErrors()
-
-			errs.Add("base", "Internal Server Error")
-
-			JSON(StatusInternalServerError, ctx, errs)
+			JSON(StatusInternalServerError, ctx, model.NewErrors("base", "Internal Server Error"))
 
 			return
 		}
