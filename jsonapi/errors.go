@@ -17,9 +17,9 @@ type source struct {
 }
 
 type err struct {
-	Title  string `json:"title"`
-	Detail string `json:"detail"`
-	Source source `json:"source"`
+	Title  string  `json:"title"`
+	Detail string  `json:"detail"`
+	Source *source `json:"source,omitempty"`
 }
 
 type Errors []err
@@ -59,9 +59,9 @@ func (errs *Errors) add(args []string) {
 
 	switch src {
 	case "pointer":
-		er.Source = source{Pointer: attr}
+		er.Source = &source{Pointer: attr}
 	case "parameter":
-		er.Source = source{Parameter: attr}
+		er.Source = &source{Parameter: attr}
 	default:
 		return
 	}

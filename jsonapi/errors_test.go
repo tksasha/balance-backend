@@ -80,13 +80,35 @@ func TestAdd(t *testing.T) {
 }
 
 func TestMarshalJSON(t *testing.T) {
-	errs := jsonapi.NewErrors("pointer", "/data/attributes/name", "required")
+	t.Run("when it is a `pointer`", func(t *testing.T) {
+		errs := jsonapi.NewErrors("pointer", "/data/attributes/name", "required")
 
-	expected := `{"errors":[{"title":"required","detail":"Can't be blank","source":{"pointer":"/data/attributes/name"}}]}`
+		expected := `{"errors":[{"title":"required","detail":"Can't be blank","source":{"pointer":"/data/attributes/name"}}]}`
 
-	result, _ := errs.MarshalJSON()
+		result, _ := errs.MarshalJSON()
 
-	assert.Equal(t, string(result), expected)
+		assert.Equal(t, string(result), expected)
+	})
+
+	t.Run("when it is a `parameter`", func(t *testing.T) {
+		errs := jsonapi.NewErrors("parameter", "id", "invalid")
+
+		expected := `{"errors":[{"title":"invalid","detail":"Is not valid","source":{"parameter":"id"}}]}`
+
+		result, _ := errs.MarshalJSON()
+
+		assert.Equal(t, string(result), expected)
+	})
+
+	t.Run("when it is a `server error`", func(t *testing.T) {
+		errs := jsonapi.NewErrors("server error")
+
+		expected := `{"errors":[{"title":"server error","detail":"Internal Server Error"}]}`
+
+		result, _ := errs.MarshalJSON()
+
+		assert.Equal(t, string(result), expected)
+	})
 }
 
 func TestIsEmpty(t *testing.T) {
