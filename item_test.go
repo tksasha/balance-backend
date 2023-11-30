@@ -1,8 +1,10 @@
 package main
 
 import (
+	"errors"
 	"slices"
 	"testing"
+	"time"
 
 	"github.com/tksasha/balance/date"
 	"gotest.tools/v3/assert"
@@ -39,7 +41,6 @@ func TestBuildItem(t *testing.T) {
 
 func TestCreateItem(t *testing.T) {
 	db := Open()
-
 	defer Close(db)
 
 	params := new(itemParams)
@@ -96,6 +97,8 @@ func TestCreateItem(t *testing.T) {
 			Description: "lorem ipsum ...",
 		}
 
+		today := time.Now()
+
 		item, err := CreateItem(db, params)
 
 		assert.NilError(t, err)
@@ -107,5 +110,36 @@ func TestCreateItem(t *testing.T) {
 		assert.Equal(t, item.Sum, 111.11)
 		assert.Equal(t, item.CategoryID, category.ID)
 		assert.Equal(t, item.Description, "lorem ipsum ...")
+		assert.Assert(t, item.CreatedAt.After(today))
+		assert.Assert(t, item.UpdatedAt.After(today))
+	})
+}
+
+func TestFindItem(t *testing.T) {
+	db := Open()
+	defer Close(db)
+
+	t.Run("when Item is exist", func(t *testing.T) {
+		category, _ := CreateCategory(db, &categoryParams{Name: "Category Eleven"})
+
+		params := &itemParams{
+			Date:       date.New(2023, 11, 30),
+			Formula:    "2+3",
+			CategoryID: category.ID,
+		}
+
+		created, _ := CreateItem(db, params)
+
+		item, err := FindItem(db, created.ID)
+
+		assert.NilError(t, err)
+		assert.Equal(t, item.ID, created.ID)
+	})
+
+	t.Run("when item is not exist", func(t *testing.T) {
+		item, err := FindItem(db, 1203)
+
+		assert.Assert(t, errors.Is(err, RecordNotFoundError))
+		assert.Assert(t, item == nil)
 	})
 }

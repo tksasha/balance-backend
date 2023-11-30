@@ -2,6 +2,8 @@ package main
 
 import (
 	"database/sql"
+	"errors"
+	"time"
 
 	"github.com/tksasha/balance/date"
 	"github.com/tksasha/balance/formula"
@@ -16,6 +18,8 @@ type Item struct {
 	Sum         float64   `json:"sum"`
 	CategoryID  int       `json:"category_id" validate:"required"`
 	Description string    `json:"description"`
+	CreatedAt   time.Time `json:"-"`
+	UpdatedAt   time.Time `json:"-"`
 }
 
 type itemParams struct {
@@ -26,18 +30,30 @@ type itemParams struct {
 }
 
 func NewItem() *Item {
-	return &Item{model.Model{Errors: model.NewErrors()}, 0, date.New(1, 1, 1), "", 0.0, 0, ""}
+	return &Item{
+		model.Model{Errors: model.NewErrors()},
+		0,                 // ID
+		date.New(1, 1, 1), // Date
+		"",                // Formula
+		0.0,               // Sum
+		0,                 // CategoryID
+		"",                // Description
+		time.Now(),        // CreatedAt
+		time.Now(),        // UpdatedAt
+	}
 }
 
 func BuildItem(Date date.Date, Formula string, CategoryID int, Description string) *Item {
 	return &Item{
 		model.Model{Errors: model.NewErrors()},
-		0,
-		Date,
-		Formula,
-		0.0,
-		CategoryID,
-		Description,
+		0,           // ID
+		Date,        // Date
+		Formula,     // Formula
+		0.0,         // Sum
+		CategoryID,  // CategoryID
+		Description, // Description
+		time.Now(),  // CreatedAt
+		time.Now(),  // UpdatedAt
 	}
 }
 
@@ -90,4 +106,31 @@ func CreateItem(db *sql.DB, params *itemParams) (*Item, error) {
 	item.ID = int(id)
 
 	return item, nil
+}
+
+func FindItem(db *sql.DB, id int) (*Item, error) {
+	item := new(Item)
+
+	query := `
+		SELECT
+			id, date, formula, sum, category_id, description
+		FROM
+			items
+		WHERE
+			id = ?
+	`
+
+	row := db.QueryRow(query, id)
+
+	err := row.Scan(&item.ID, &item.Date, &item.Formula, &item.Sum, &item.CategoryID, &item.Description)
+
+	if err == nil {
+		return item, nil
+	}
+
+	if errors.Is(err, sql.ErrNoRows) {
+		return nil, RecordNotFoundError
+	}
+
+	return nil, InternalServerError
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 
 	"github.com/tksasha/balance/model"
 )
@@ -63,7 +64,7 @@ func FindCategory(db *sql.DB, id int) (*Category, error) {
 		return category, nil
 	}
 
-	if err == sql.ErrNoRows {
+	if errors.Is(err, sql.ErrNoRows) {
 		return nil, RecordNotFoundError
 	}
 

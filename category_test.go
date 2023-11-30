@@ -45,18 +45,16 @@ func TestFindCategory(t *testing.T) {
 	defer Close(db)
 
 	t.Run("when Category is exist", func(t *testing.T) {
-		expected, _ := CreateCategory(db, &categoryParams{"Category Two"})
+		expected := Factory(db, "Category").(Category)
 
-		result, _ := FindCategory(db, int(expected.ID))
+		result, _ := FindCategory(db, expected.ID)
 
 		assert.Equal(t, result.ID, expected.ID)
 		assert.Equal(t, result.Name, expected.Name)
 	})
 
 	t.Run("when Category is not exist", func(t *testing.T) {
-		db.Exec("DELETE FROM categories")
-
-		result, err := FindCategory(db, 1)
+		result, err := FindCategory(db, 1335)
 
 		assert.Assert(t, result == nil)
 		assert.ErrorIs(t, err, RecordNotFoundError)
