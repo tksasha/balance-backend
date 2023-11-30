@@ -3,8 +3,9 @@ package model_test
 import (
 	"testing"
 
-	. "github.com/tksasha/balance/assert"
 	"github.com/tksasha/balance/model"
+	"gotest.tools/v3/assert"
+	is "gotest.tools/v3/assert/cmp"
 )
 
 var (
@@ -15,7 +16,7 @@ func TestIsValid(t *testing.T) {
 	t.Run("when it is valid", func(t *testing.T) {
 		subject.Errors = model.NewErrors()
 
-		Eq(t, subject.IsValid(), true)
+		assert.Assert(t, subject.IsValid())
 	})
 
 	t.Run("when it is not valid", func(t *testing.T) {
@@ -23,7 +24,7 @@ func TestIsValid(t *testing.T) {
 
 		subject.Errors.Add("attribute", "can't be blank")
 
-		Eq(t, subject.IsValid(), false)
+		assert.Assert(t, !subject.IsValid())
 	})
 }
 
@@ -31,7 +32,7 @@ func TestIsNotValid(t *testing.T) {
 	t.Run("when it is valid", func(t *testing.T) {
 		subject.Errors = model.NewErrors()
 
-		Eq(t, subject.IsValid(), true)
+		assert.Assert(t, subject.IsValid())
 	})
 
 	t.Run("when it is not valid", func(t *testing.T) {
@@ -39,7 +40,7 @@ func TestIsNotValid(t *testing.T) {
 
 		subject.Errors.Add("attribute", "is not valid")
 
-		Eq(t, subject.IsValid(), false)
+		assert.Assert(t, !subject.IsValid())
 	})
 }
 
@@ -48,7 +49,7 @@ func TestAddError(t *testing.T) {
 
 	subject.AddError("name", "can't be blank")
 
-	In(t, subject.Errors["errors"]["name"], "can't be blank")
+	assert.Assert(t, is.Contains(subject.Errors["errors"]["name"], "can't be blank"))
 }
 
 func TestValidate(t *testing.T) {
@@ -61,6 +62,7 @@ func TestValidate(t *testing.T) {
 
 	model.Validate(&subject)
 
-	Eq(t, subject.IsValid(), false)
-	In(t, subject.Errors["errors"]["name"], "required")
+	assert.Assert(t, !subject.IsValid())
+
+	assert.Assert(t, is.Contains(subject.Errors["errors"]["name"], "required"))
 }
