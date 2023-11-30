@@ -34,8 +34,8 @@ func TestMain(m *testing.M) {
 
 func Factory(db *sql.DB, model string) any {
 	switch model {
-	case "item":
-		category := Factory(db, "category").(Category)
+	case "item", "Item":
+		category := Factory(db, "Category").(Category)
 
 		params := &itemParams{
 			Date:       date.New(2023, 11, 30),

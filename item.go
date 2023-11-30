@@ -134,3 +134,30 @@ func FindItem(db *sql.DB, id int) (*Item, error) {
 
 	return nil, InternalServerError
 }
+
+func (item *Item) Update(db *sql.DB, params *itemParams) error {
+	item.Date = params.Date
+	item.Formula = params.Formula
+	item.CategoryID = params.CategoryID
+	item.Description = params.Description
+
+	item.calculate()
+
+	if model.Validate(item); !item.IsValid() {
+		return RecordInvalidError
+	}
+
+	query := `
+		UPDATE items
+		SET date = ?, formula = ?, sum = ?, category_id = ?, description = ?
+		WHERE id = ?
+	`
+
+	_, err := db.Exec(query, item.Date.String(), item.Formula, item.Sum, item.CategoryID, item.Description, item.ID)
+
+	if err == nil {
+		return nil
+	}
+
+	return InternalServerError
+}

@@ -5,8 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"gotest.tools/v3/assert"
-
+	. "github.com/tksasha/balance/assert"
 	"github.com/tksasha/balance/date"
 )
 
@@ -15,22 +14,21 @@ var exp = date.Date(time.Date(2023, 11, 23, 0, 0, 0, 0, time.UTC))
 func TestNew(t *testing.T) {
 	res := date.New(2023, 11, 23)
 
-	assert.Equal(t, res, exp)
+	Eq(t, res, exp)
 }
 
 func TestParse(t *testing.T) {
 	t.Run("when `input` is valid", func(t *testing.T) {
 		res, err := date.Parse("2023-11-23")
 
-		assert.NilError(t, err)
-
-		assert.Equal(t, res, exp)
+		Eq(t, err, nil)
+		Eq(t, res, exp)
 	})
 
 	t.Run("when `input` is not valid", func(t *testing.T) {
 		_, err := date.Parse("")
 
-		assert.Assert(t, err != nil)
+		Ne(t, err, nil)
 	})
 }
 
@@ -41,37 +39,34 @@ func TestToday(t *testing.T) {
 
 	res := date.Today()
 
-	assert.Equal(t, res, exp)
+	Eq(t, res, exp)
 }
 
 func TestIsZero(t *testing.T) {
-	t.Run("when it is empty", func(t *testing.T) {
-		dat := date.New(2023, 11, 23)
+	t.Run("when it is not empty", func(t *testing.T) {
+		subject := date.New(2023, 11, 23)
 
-		assert.Assert(t, dat.IsZero() == false)
+		Eq(t, subject.IsZero(), false)
 	})
 
 	t.Run("when it is empty", func(t *testing.T) {
-		dat, _ := date.Parse("")
+		subject, _ := date.Parse("")
 
-		assert.Assert(t, dat.IsZero())
+		Eq(t, subject.IsZero(), true)
 	})
 }
 
 func TestString(t *testing.T) {
 	res := date.New(2023, 11, 23).String()
 
-	assert.Equal(t, res, "2023-11-23")
+	Eq(t, res, "2023-11-23")
 }
 
 func TestMarshalJSON(t *testing.T) {
-	dat := date.New(2023, 11, 23)
+	subject, err := date.New(2023, 11, 23).MarshalJSON()
 
-	res, err := dat.MarshalJSON()
-
-	assert.NilError(t, err)
-
-	assert.Equal(t, string(res), `"2023-11-23"`)
+	Eq(t, err, nil)
+	Eq(t, string(subject), `"2023-11-23"`)
 
 	t.Run("when it is in a struct", func(t *testing.T) {
 		exp := `{"date":"2023-11-23"}`
@@ -82,9 +77,8 @@ func TestMarshalJSON(t *testing.T) {
 
 		res, err := json.Marshal(str)
 
-		assert.NilError(t, err)
-
-		assert.Equal(t, string(res), exp)
+		Eq(t, err, nil)
+		Eq(t, string(res), exp)
 	})
 }
 
@@ -93,9 +87,8 @@ func TestUnmarshalJSON(t *testing.T) {
 
 	err := res.UnmarshalJSON([]byte(`"2023-11-23"`))
 
-	assert.NilError(t, err)
-
-	assert.Equal(t, *res, exp)
+	Eq(t, err, nil)
+	Eq(t, *res, exp)
 
 	t.Run("when it is in a struct", func(t *testing.T) {
 		exp := struct {
@@ -108,8 +101,7 @@ func TestUnmarshalJSON(t *testing.T) {
 
 		err := json.Unmarshal([]byte(`{"date":"2023-11-23"}`), &res)
 
-		assert.NilError(t, err)
-
-		assert.Equal(t, res, exp)
+		Eq(t, err, nil)
+		Eq(t, res, exp)
 	})
 }
