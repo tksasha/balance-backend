@@ -30,31 +30,24 @@ type itemParams struct {
 }
 
 func NewItem() *Item {
-	return &Item{
-		model.Model{Errors: model.NewErrors()},
-		0,                 // ID
-		date.New(1, 1, 1), // Date
-		"",                // Formula
-		0.0,               // Sum
-		0,                 // CategoryID
-		"",                // Description
-		time.Now(),        // CreatedAt
-		time.Now(),        // UpdatedAt
-	}
+	item := &Item{}
+
+	item.Errors = model.NewErrors()
+
+	return item
 }
 
 func BuildItem(Date date.Date, Formula string, CategoryID int, Description string) *Item {
-	return &Item{
-		model.Model{Errors: model.NewErrors()},
-		0,           // ID
-		Date,        // Date
-		Formula,     // Formula
-		0.0,         // Sum
-		CategoryID,  // CategoryID
-		Description, // Description
-		time.Now(),  // CreatedAt
-		time.Now(),  // UpdatedAt
+	item := &Item{
+		Date:        Date,
+		Formula:     Formula,
+		CategoryID:  CategoryID,
+		Description: Description,
 	}
+
+	item.Errors = model.NewErrors()
+
+	return item
 }
 
 func (item *Item) calculate() {
@@ -78,6 +71,9 @@ func CreateItem(db *sql.DB, params *itemParams) (*Item, error) {
 		params.Description,
 	)
 
+	item.CreatedAt = time.Now()
+	item.UpdatedAt = time.Now()
+
 	item.calculate()
 
 	model.Validate(item)
@@ -87,13 +83,21 @@ func CreateItem(db *sql.DB, params *itemParams) (*Item, error) {
 
 	sql := `
 		INSERT INTO
-			items(date, formula, sum, category_id, description)
+			items(date, formula, sum, category_id, description, created_at, updated_at)
 		VALUES
-			(?, ?, ?, ?, ?)
+			(?, ?, ?, ?, ?, ?, ?)
 	`
 
-	// TODO: do not forget about timestamps
-	res, err := db.Exec(sql, item.Date.String(), item.Formula, item.Sum, item.CategoryID, item.Description)
+	res, err := db.Exec(
+		sql,
+		item.Date.String(),
+		item.Formula,
+		item.Sum,
+		item.CategoryID,
+		item.Description,
+		item.CreatedAt,
+		item.UpdatedAt,
+	)
 	if err != nil {
 		return nil, InternalServerError // TODO: provide more details (Foreign Key Error)
 	}
@@ -113,7 +117,7 @@ func FindItem(db *sql.DB, id int) (*Item, error) {
 
 	query := `
 		SELECT
-			id, date, formula, sum, category_id, description
+			id, date, formula, sum, category_id, description, created_at, updated_at
 		FROM
 			items
 		WHERE
@@ -122,8 +126,16 @@ func FindItem(db *sql.DB, id int) (*Item, error) {
 
 	row := db.QueryRow(query, id)
 
-	err := row.Scan(&item.ID, &item.Date, &item.Formula, &item.Sum, &item.CategoryID, &item.Description)
-
+	err := row.Scan(
+		&item.ID,
+		&item.Date,
+		&item.Formula,
+		&item.Sum,
+		&item.CategoryID,
+		&item.Description,
+		&item.CreatedAt,
+		&item.UpdatedAt,
+	)
 	if err == nil {
 		return item, nil
 	}
