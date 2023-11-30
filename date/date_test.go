@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/tksasha/balance/date"
-	"gotest.tools/assert"
+	"gotest.tools/v3/assert"
 )
 
 var exp = date.Date(time.Date(2023, 11, 23, 0, 0, 0, 0, time.UTC))
