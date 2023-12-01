@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"time"
 
 	"github.com/fasthttp/router"
 	"github.com/valyala/fasthttp"
@@ -11,8 +10,6 @@ import (
 func main() {
 	db := Open()
 	defer Close(db)
-
-	time.Local = time.UTC // TODO: do something
 
 	r := router.New()
 

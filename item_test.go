@@ -1,4 +1,4 @@
-package main
+package main_test
 
 import (
 	"testing"
@@ -7,6 +7,8 @@ import (
 	"github.com/tksasha/balance/date"
 	"gotest.tools/v3/assert"
 	is "gotest.tools/v3/assert/cmp"
+
+	. "github.com/tksasha/balance"
 )
 
 func TestNewItem(t *testing.T) {
@@ -45,7 +47,7 @@ func TestCreateItem(t *testing.T) {
 	t.Run("when params are valid", func(t *testing.T) {
 		category := Factory(db, "Category").(Category)
 
-		params := &itemParams{
+		params := &ItemParams{
 			Date:        date.New(2023, 11, 20),
 			Formula:     "42.1 + 69.01",
 			CategoryID:  category.ID,
@@ -69,7 +71,7 @@ func TestCreateItem(t *testing.T) {
 	})
 
 	t.Run("when params are not valid", func(t *testing.T) {
-		item, err := CreateItem(db, &itemParams{})
+		item, err := CreateItem(db, &ItemParams{})
 
 		errs := item.Errors["errors"]
 
@@ -116,7 +118,7 @@ func TestUpdateItem(t *testing.T) {
 		category := Factory(db, "Category").(Category)
 		item := Factory(db, "Item").(Item)
 
-		params := &itemParams{
+		params := &ItemParams{
 			Date:        date.New(2023, 12, 31),
 			Formula:     "30.1 + 40.3",
 			CategoryID:  category.ID,
@@ -136,7 +138,7 @@ func TestUpdateItem(t *testing.T) {
 	t.Run("when params are not valid", func(t *testing.T) {
 		item := Factory(db, "Item").(Item)
 
-		err := item.Update(db, &itemParams{})
+		err := item.Update(db, &ItemParams{})
 
 		errs := item.Errors["errors"]
 
@@ -149,7 +151,7 @@ func TestUpdateItem(t *testing.T) {
 	t.Run("when Formula is not valid", func(t *testing.T) {
 		item := Factory(db, "Item").(Item)
 
-		err := item.Update(db, &itemParams{Formula: "(2++"})
+		err := item.Update(db, &ItemParams{Formula: "(2++"})
 
 		errs := item.Errors["errors"]
 

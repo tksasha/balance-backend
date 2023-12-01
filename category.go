@@ -13,7 +13,7 @@ type Category struct {
 	Name string `json:"name" validate:"required"`
 }
 
-type categoryParams struct {
+type CategoryParams struct {
 	Name string
 }
 
@@ -25,7 +25,7 @@ func BuildCategory(name string) *Category {
 	return &Category{model.Model{Errors: model.NewErrors()}, 0, name}
 }
 
-func CreateCategory(db *sql.DB, params *categoryParams) (*Category, error) {
+func CreateCategory(db *sql.DB, params *CategoryParams) (*Category, error) {
 	category := BuildCategory(params.Name)
 
 	model.Validate(category)

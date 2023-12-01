@@ -1,4 +1,4 @@
-package main
+package main_test
 
 import (
 	"testing"
@@ -6,6 +6,8 @@ import (
 	"github.com/brianvoe/gofakeit/v6"
 	"gotest.tools/v3/assert"
 	is "gotest.tools/v3/assert/cmp"
+
+	. "github.com/tksasha/balance"
 )
 
 func TestNewCategory(t *testing.T) {
@@ -27,7 +29,7 @@ func TestCreateCategory(t *testing.T) {
 
 	t.Run("when params are valid", func(t *testing.T) {
 		categoryName := gofakeit.AppName()
-		category, _ := CreateCategory(db, &categoryParams{categoryName})
+		category, _ := CreateCategory(db, &CategoryParams{categoryName})
 
 		var id int
 
@@ -42,7 +44,7 @@ func TestCreateCategory(t *testing.T) {
 	})
 
 	t.Run("when `Name` is empty", func(t *testing.T) {
-		category, err := CreateCategory(db, &categoryParams{""})
+		category, err := CreateCategory(db, &CategoryParams{""})
 
 		assert.Equal(t, category.ID, 0)
 		assert.ErrorIs(t, err, RecordInvalidError)

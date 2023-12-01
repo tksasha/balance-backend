@@ -22,7 +22,7 @@ type Item struct {
 	UpdatedAt   time.Time `json:"-"`
 }
 
-type itemParams struct {
+type ItemParams struct {
 	Date        date.Date `json:"date"`
 	CategoryID  int       `json:"category_id"`
 	Formula     string    `json:"formula"`
@@ -63,7 +63,7 @@ func (item *Item) calculate() {
 	}
 }
 
-func CreateItem(db *sql.DB, params *itemParams) (*Item, error) {
+func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
 	item := BuildItem(
 		params.Date,
 		params.Formula,
@@ -147,7 +147,7 @@ func FindItem(db *sql.DB, id int) (*Item, error) {
 	return nil, InternalServerError
 }
 
-func (item *Item) Update(db *sql.DB, params *itemParams) error {
+func (item *Item) Update(db *sql.DB, params *ItemParams) error {
 	item.Date = params.Date
 	item.Formula = params.Formula
 	item.CategoryID = params.CategoryID

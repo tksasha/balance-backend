@@ -7,8 +7,8 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
-func parseParams(body []byte) (*itemParams, error) {
-	params := new(itemParams)
+func parseParams(body []byte) (*ItemParams, error) {
+	params := new(ItemParams)
 
 	if err := json.Unmarshal(body, params); err != nil {
 		return nil, err // TODO: prettify this error
