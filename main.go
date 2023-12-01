@@ -13,7 +13,7 @@ func main() {
 
 	r := router.New()
 
-	// r.POST("/items", CreateItemHandler)
+	r.POST("/items", CreateItemHandler(db))
 	r.GET("/items/{id}", GetItemHandler(db))
 
 	handler := func() func(ctx *fasthttp.RequestCtx) {

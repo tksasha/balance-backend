@@ -1,44 +1,37 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"errors"
 
 	"github.com/valyala/fasthttp"
 )
 
-func parseParams(body []byte) (*ItemParams, error) {
-	params := new(ItemParams)
+func CreateItemHandler(db *sql.DB) func(*fasthttp.RequestCtx) {
+	return func(ctx *fasthttp.RequestCtx) {
+		params := new(ItemParams)
 
-	if err := json.Unmarshal(body, params); err != nil {
-		return nil, err // TODO: prettify this error
-	}
+		if err := json.Unmarshal(ctx.PostBody(), params); err != nil {
+			JSON(fasthttp.StatusUnprocessableEntity, ctx, err)
 
-	return params, nil
-}
+			return
+		}
 
-func CreateItemHandler(ctx *fasthttp.RequestCtx) {
-	db := Open()
+		item, err := CreateItem(db, params)
+		if err == nil {
+			JSON(fasthttp.StatusCreated, ctx, &item)
 
-	defer Close(db)
+			return
+		}
 
-	params, err := parseParams(ctx.PostBody())
-	if err != nil {
-		JSON(StatusUnprocessableEntity, ctx, err) // TODO: prettify this error
-
-		return
-	}
-
-	item, err := CreateItem(db, params)
-	if err == nil {
-		JSON(StatusCreated, ctx, &item)
-
-		return
-	}
-
-	if errors.Is(err, ClientError) {
-		JSON(StatusUnprocessableEntity, ctx, item.Errors)
-	} else {
-		JSON(StatusInternalServerError, ctx, err) // TODO: prettify this error
+		switch {
+		case errors.Is(err, RecordInvalidError):
+			JSON(fasthttp.StatusUnprocessableEntity, ctx, item.Errors)
+		case errors.Is(err, InternalServerError):
+			JSON(fasthttp.StatusInternalServerError, ctx, err)
+		default:
+			panic("UNKNOWN ERROR !!!")
+		}
 	}
 }
