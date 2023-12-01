@@ -76,12 +76,11 @@ func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
 
 	item.calculate()
 
-	model.Validate(item)
-	if !item.IsValid() {
+	if model.Validate(item); !item.IsValid() {
 		return item, RecordInvalidError
 	}
 
-	sql := `
+	query := `
 		INSERT INTO
 			items(date, formula, sum, category_id, description, created_at, updated_at)
 		VALUES
@@ -89,7 +88,7 @@ func CreateItem(db *sql.DB, params *ItemParams) (*Item, error) {
 	`
 
 	res, err := db.Exec(
-		sql,
+		query,
 		item.Date.String(),
 		item.Formula,
 		item.Sum,
@@ -166,7 +165,6 @@ func (item *Item) Update(db *sql.DB, params *ItemParams) error {
 	`
 
 	_, err := db.Exec(query, item.Date.String(), item.Formula, item.Sum, item.CategoryID, item.Description, item.ID)
-
 	if err == nil {
 		return nil
 	}

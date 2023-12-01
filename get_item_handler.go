@@ -18,14 +18,12 @@ func GetItemHandler(db *sql.DB) func(*fasthttp.RequestCtx) {
 		}
 
 		item, err := FindItem(db, id)
-
-		if errors.Is(err, RecordNotFoundError) {
+		switch {
+		case errors.Is(err, RecordNotFoundError):
 			JSON(fasthttp.StatusNotFound, ctx, err)
 
 			return
-		}
-
-		if err != nil {
+		case err != nil:
 			JSON(fasthttp.StatusInternalServerError, ctx, err)
 
 			return
