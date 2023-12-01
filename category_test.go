@@ -3,20 +3,22 @@ package main
 import (
 	"testing"
 
-	. "github.com/tksasha/balance/assert"
+	"github.com/brianvoe/gofakeit/v6"
+	"gotest.tools/v3/assert"
+	is "gotest.tools/v3/assert/cmp"
 )
 
 func TestNewCategory(t *testing.T) {
 	category := NewCategory()
 
-	Eq(t, category.Errors.IsEmpty(), true)
+	assert.Assert(t, category.Errors.IsEmpty())
 }
 
 func TestBuildCategory(t *testing.T) {
 	category := BuildCategory("Category Three")
 
-	Eq(t, category.Name, "Category Three")
-	Eq(t, category.Errors.IsEmpty(), true)
+	assert.Equal(t, category.Name, "Category Three")
+	assert.Assert(t, category.Errors.IsEmpty())
 }
 
 func TestCreateCategory(t *testing.T) {
@@ -24,17 +26,26 @@ func TestCreateCategory(t *testing.T) {
 	defer Close(db)
 
 	t.Run("when params are valid", func(t *testing.T) {
-		category, _ := CreateCategory(db, &categoryParams{"Category One"})
+		categoryName := gofakeit.AppName()
+		category, _ := CreateCategory(db, &categoryParams{categoryName})
 
-		Eq(t, category.ID, 1)
-		Eq(t, category.Name, "Category One")
+		var id int
+
+		row := db.QueryRow(`SELECT MAX(id) FROM categories`)
+
+		if err := row.Scan(&id); err != nil {
+			t.Error(err)
+		}
+
+		assert.Equal(t, category.ID, id)
+		assert.Equal(t, category.Name, categoryName)
 	})
 
 	t.Run("when `Name` is empty", func(t *testing.T) {
 		category, err := CreateCategory(db, &categoryParams{""})
 
-		Eq(t, category.ID, 0)
-		Is(t, err, RecordInvalidError)
+		assert.Equal(t, category.ID, 0)
+		assert.ErrorIs(t, err, RecordInvalidError)
 	})
 }
 
@@ -47,14 +58,14 @@ func TestFindCategory(t *testing.T) {
 
 		result, _ := FindCategory(db, expected.ID)
 
-		Eq(t, result.ID, expected.ID)
-		Eq(t, result.Name, expected.Name)
+		assert.Equal(t, result.ID, expected.ID)
+		assert.Equal(t, result.Name, expected.Name)
 	})
 
 	t.Run("when Category is not exist", func(t *testing.T) {
 		result, err := FindCategory(db, 1335)
 
-		Eq(t, result, nil)
-		Is(t, err, RecordNotFoundError)
+		assert.Assert(t, is.Nil(result))
+		assert.ErrorIs(t, err, RecordNotFoundError)
 	})
 }
