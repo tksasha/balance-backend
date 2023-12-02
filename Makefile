@@ -1,44 +1,24 @@
-.PHONY: all
-all: tests
+PACKAGE=github.com/tksasha/balance
+PACKAGES=$(PACKAGE) \
+				 github.com/tksasha/balance/date \
+				 github.com/tksasha/balance/formula \
+				 github.com/tksasha/balance/model \
+				 github.com/tksasha/balance/utils/strings \
 
-.PHONY: tests
-tests:
-	@GOENV=test go test
+.PHONY: all
+all: t
 
 .PHONY: t
-t: tests
-
-.PHONY: integrations
-integrations: build db
-	@GOENV=test ./balance &
-	@sleep 1
-	@cd tests && bundle && rspec spec/items/create_spec.rb spec/items/show_spec.rb
-	@killall balance
-	@go clean
-
-.PHONY: i
-i: integrations
-
-.PHONY: run
-run:
-	@go run \
-		$(filter-out $(wildcard *_test.go), $(wildcard *.go))
+t:
+	@GOENV=test go test $(PACKAGES)
 
 .PHONY: r
-r: run
+r:
+	go run $(PACKAGE)
 
 .PHONY: tr
 tr:
-	GOENV=test make run
-
-.PHONY: build
-build:
-	@go build \
-		-o balance \
-		$(filter-out $(wildcard *_test.go), $(wildcard *.go))
-
-.PHONY: b
-b: build
+	GOENV=test make r
 
 .PHONY: db
 db:
