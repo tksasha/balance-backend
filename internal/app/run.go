@@ -12,10 +12,11 @@ import (
 
 func Run(c *config.Config) {
 	conn := db.Open(c)
-
 	if conn != nil {
 		defer db.Close(conn)
 	}
 
-	log.Fatal(fasthttp.ListenAndServe(":3000", router.New(conn)))
+	handler := router.New(conn)
+
+	log.Fatal(fasthttp.ListenAndServe(":3000", handler))
 }
