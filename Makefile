@@ -1,27 +1,44 @@
-PACKAGE=github.com/tksasha/balance
-PACKAGES=$(PACKAGE) \
-				 github.com/tksasha/balance/date \
-				 github.com/tksasha/balance/formula \
-				 github.com/tksasha/balance/model \
-				 github.com/tksasha/balance/utils/strings \
+APP=cmd/main.go
+
+PACKAGES=\
+	github.com/tksasha/balance/config \
+	github.com/tksasha/balance/internal/app \
+	github.com/tksasha/balance/internal/app/db \
+	github.com/tksasha/balance/internal/app/router \
+	github.com/tksasha/balance/internal/controller \
+	github.com/tksasha/balance/internal/interface/sqlite3 \
+	github.com/tksasha/balance/internal/model \
+	github.com/tksasha/balance/internal/repository \
+	github.com/tksasha/balance/internal/usecase/item \
 
 .PHONY: all
-all: t
+all: test
 
-.PHONY: t
-t:
-	@GOENV=test go test $(PACKAGES)
+.PHONY: run
+run:
+	@go run $(APP)
 
-.PHONY: r
-r:
-	go run $(PACKAGE)
+r: run
 
-.PHONY: tr
-tr:
-	GOENV=test make r
+.PHONY: vet
+vet:
+	@echo "go vet"
+	@go vet $(APP)
+	@go vet $(PACKAGES)
 
-.PHONY: db
-db:
-	@sqlite3 db/development.sqlite3 '.schema --indent --nosys' > db/schema.sql
-	@rm -rf db/test.sqlite3
-	@sqlite3 db/test.sqlite3 '.read db/schema.sql'
+.PHONY: fix
+fix:
+	@echo "go fix"
+	@go fix $(APP)
+	@go fix $(PACKAGES)
+
+.PHONY: fmt
+fmt:
+	@echo "go fmt"
+	@go fmt $(APP)
+	@go fmt $(PACKAGES)
+
+.PHONY: test
+test: vet fix fmt
+	@echo "go test"
+	@go test $(PACKAGES)

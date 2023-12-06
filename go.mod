@@ -6,6 +6,7 @@ require (
 	github.com/brianvoe/gofakeit/v6 v6.25.0
 	github.com/fasthttp/router v1.4.22
 	github.com/go-playground/validator/v10 v10.16.0
+	github.com/joho/godotenv v1.5.1
 	github.com/mattn/go-sqlite3 v1.14.18
 	github.com/valyala/fasthttp v1.51.0
 	gotest.tools/v3 v3.5.1
