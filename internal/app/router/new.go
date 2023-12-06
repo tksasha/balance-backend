@@ -1,13 +1,15 @@
 package router
 
 import (
+	"database/sql"
 	"log"
 
 	"github.com/fasthttp/router"
+	"github.com/tksasha/balance/internal/controller"
 	"github.com/valyala/fasthttp"
 )
 
-func New() func(*fasthttp.RequestCtx) {
+func New(db *sql.DB) func(*fasthttp.RequestCtx) {
 	r := router.New()
 
 	handler := func() func(ctx *fasthttp.RequestCtx) {
@@ -19,6 +21,12 @@ func New() func(*fasthttp.RequestCtx) {
 			r.Handler(ctx)
 		}
 	}
+
+	items := controller.NewItemController(db)
+	r.GET("/items/{id}", items.Show)
+
+	categories := controller.NewCategoryController(db)
+	r.POST("/categories", categories.Create)
 
 	return handler()
 }

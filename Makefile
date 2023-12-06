@@ -1,4 +1,4 @@
-APP=cmd/main.go
+APP=cmd/app/main.go
 
 PACKAGES=\
 	github.com/tksasha/balance/config \
@@ -6,10 +6,18 @@ PACKAGES=\
 	github.com/tksasha/balance/internal/app/db \
 	github.com/tksasha/balance/internal/app/router \
 	github.com/tksasha/balance/internal/controller \
-	github.com/tksasha/balance/internal/interface/sqlite3 \
+	github.com/tksasha/balance/internal/interface/sqlite3/category \
+	github.com/tksasha/balance/internal/interface/sqlite3/item \
+	github.com/tksasha/balance/internal/interface/testdb/category \
+	github.com/tksasha/balance/internal/interface/testdb/errors \
+	github.com/tksasha/balance/internal/interface/testdb/item \
 	github.com/tksasha/balance/internal/model \
 	github.com/tksasha/balance/internal/repository \
 	github.com/tksasha/balance/internal/usecase \
+	github.com/tksasha/balance/internal/usecase/errors \
+	github.com/tksasha/balance/pkg/model \
+	github.com/tksasha/balance/pkg/model/errors \
+	github.com/tksasha/balance/pkg/utils/strings \
 
 .PHONY: all
 all: test

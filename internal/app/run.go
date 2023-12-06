@@ -17,5 +17,5 @@ func Run(c *config.Config) {
 		defer db.Close(conn)
 	}
 
-	log.Fatal(fasthttp.ListenAndServe(":3000", router.New()))
+	log.Fatal(fasthttp.ListenAndServe(":3000", router.New(conn)))
 }

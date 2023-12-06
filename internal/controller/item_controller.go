@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/tksasha/balance/internal/interface/sqlite3"
+	sqlite3 "github.com/tksasha/balance/internal/interface/sqlite3/item"
 	"github.com/tksasha/balance/internal/repository"
 	"github.com/tksasha/balance/internal/usecase"
 	"github.com/valyala/fasthttp"

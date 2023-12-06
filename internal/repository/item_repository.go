@@ -6,4 +6,5 @@ import (
 
 type ItemRepository interface {
 	FindByID(int) (*model.Item, error)
+	Create(*model.Item) error
 }
