@@ -9,7 +9,7 @@ PACKAGES=\
 	github.com/tksasha/balance/internal/interface/sqlite3 \
 	github.com/tksasha/balance/internal/model \
 	github.com/tksasha/balance/internal/repository \
-	github.com/tksasha/balance/internal/usecase/item \
+	github.com/tksasha/balance/internal/usecase \
 
 .PHONY: all
 all: test
@@ -17,8 +17,6 @@ all: test
 .PHONY: run
 run:
 	@go run $(APP)
-
-r: run
 
 .PHONY: vet
 vet:

@@ -1,4 +1,4 @@
-package item_test
+package usecase_test
 
 import (
 	"gotest.tools/v3/assert"
@@ -6,12 +6,12 @@ import (
 
 	repository "github.com/tksasha/balance/internal/interface/testdb"
 	"github.com/tksasha/balance/internal/model"
-	usecase "github.com/tksasha/balance/internal/usecase/item"
+	"github.com/tksasha/balance/internal/usecase"
 )
 
 func TestShow(t *testing.T) {
 	repo := repository.New(nil)
-	sbj := usecase.New(repo)
+	item := usecase.NewItemUsecase(repo)
 
 	t.Run("when Item is found", func(t *testing.T) {
 		exp := model.Item{
@@ -20,14 +20,14 @@ func TestShow(t *testing.T) {
 			Sum:     111.11,
 		}
 
-		res, err := sbj.Show(42)
+		res, err := item.Show(42)
 
 		assert.NilError(t, err)
 		assert.Equal(t, *res, exp)
 	})
 
 	t.Run("when Item not found", func(t *testing.T) {
-		res, err := sbj.Show(69)
+		res, err := item.Show(69)
 
 		assert.Error(t, err, "Not Found")
 		assert.Assert(t, res == nil)
