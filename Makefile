@@ -1,4 +1,4 @@
-APP=cmd/app/main.go
+APP=cmd/balance/main.go
 PACKAGES=\
 	github.com/tksasha/balance/config \
 	github.com/tksasha/balance/internal/app \
