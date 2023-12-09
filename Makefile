@@ -1,5 +1,4 @@
 APP=cmd/app/main.go
-
 PACKAGES=\
 	github.com/tksasha/balance/config \
 	github.com/tksasha/balance/internal/app \
@@ -17,10 +16,9 @@ PACKAGES=\
 	github.com/tksasha/balance/internal/usecase/errors \
 	github.com/tksasha/balance/pkg/model \
 	github.com/tksasha/balance/pkg/model/errors \
-	github.com/tksasha/balance/pkg/utils/strings \
 
 .PHONY: all
-all: test
+all: vet fix fmt test
 
 .PHONY: run
 run:
@@ -45,6 +43,6 @@ fmt:
 	@go fmt $(PACKAGES)
 
 .PHONY: test
-test: vet fix fmt
+test:
 	@echo "go test"
 	@go test $(PACKAGES)
