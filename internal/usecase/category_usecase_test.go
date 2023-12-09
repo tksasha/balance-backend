@@ -22,7 +22,7 @@ func TestCreateCategory(t *testing.T) {
 		errs := category.Errors["errors"]
 
 		assert.Error(t, err, "Record Invalid Error")
-		assert.Assert(t, is.Contains(errs["name"], "required"))
+		assert.Assert(t, is.Contains(errs["name"], "can't be blank"))
 	})
 
 	t.Run("when something happened with database", func(t *testing.T) {

@@ -1,8 +1,8 @@
 package model
 
 import (
-	"github.com/tksasha/balance/pkg/model"
-	"github.com/tksasha/balance/pkg/model/errors"
+	"github.com/tksasha/model"
+	"github.com/tksasha/model/errors"
 )
 
 type Category struct {

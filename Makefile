@@ -14,8 +14,6 @@ PACKAGES=\
 	github.com/tksasha/balance/internal/repository \
 	github.com/tksasha/balance/internal/usecase \
 	github.com/tksasha/balance/internal/usecase/errors \
-	github.com/tksasha/balance/pkg/model \
-	github.com/tksasha/balance/pkg/model/errors \
 
 .PHONY: all
 all: vet fix fmt test

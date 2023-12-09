@@ -3,12 +3,11 @@ package controller
 import (
 	"database/sql"
 	"encoding/json"
-	"os"
+	"net/http"
 
 	sqlite3 "github.com/tksasha/balance/internal/interface/sqlite3/item"
 	"github.com/tksasha/balance/internal/repository"
 	"github.com/tksasha/balance/internal/usecase"
-	"github.com/valyala/fasthttp"
 )
 
 type itemController struct {
@@ -21,10 +20,10 @@ func NewItemController(db *sql.DB) *itemController {
 	return &itemController{repo}
 }
 
-func (controller *itemController) Show(ctx *fasthttp.RequestCtx) {
+func (controller *itemController) Show(w http.ResponseWriter, r *http.Request) {
 	uc := usecase.NewItemUsecase(controller.repo)
 
 	item, _ := uc.Show(1)
 
-	json.NewEncoder(os.Stdout).Encode(item)
+	json.NewEncoder(w).Encode(item)
 }

@@ -2,12 +2,12 @@ package app
 
 import (
 	"log"
+	"net/http"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/tksasha/balance/config"
 	"github.com/tksasha/balance/internal/app/db"
 	"github.com/tksasha/balance/internal/app/router"
-	"github.com/valyala/fasthttp"
 )
 
 func Run(c *config.Config) {
@@ -18,5 +18,5 @@ func Run(c *config.Config) {
 
 	handler := router.New(conn)
 
-	log.Fatal(fasthttp.ListenAndServe(":3000", handler))
+	log.Fatal(http.ListenAndServe(":3000", handler))
 }

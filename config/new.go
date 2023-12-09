@@ -1,9 +1,7 @@
 package config
 
 import (
-	"log"
-
-	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 type Config struct {
@@ -11,10 +9,6 @@ type Config struct {
 }
 
 func New() *Config {
-	if err := godotenv.Load(); err != nil {
-		log.Fatal(err)
-	}
-
 	setTimeZone()
 
 	return &Config{

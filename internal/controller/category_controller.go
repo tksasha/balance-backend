@@ -3,12 +3,13 @@ package controller
 import (
 	"database/sql"
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
 
 	sqlite3 "github.com/tksasha/balance/internal/interface/sqlite3/category"
 	"github.com/tksasha/balance/internal/model"
 	"github.com/tksasha/balance/internal/repository"
 	"github.com/tksasha/balance/internal/usecase"
-	"github.com/valyala/fasthttp"
 )
 
 type categoryController struct {
@@ -21,21 +22,21 @@ func NewCategoryController(db *sql.DB) *categoryController {
 	return &categoryController{repo}
 }
 
-func (controller *categoryController) Create(ctx *fasthttp.RequestCtx) {
+func (controller *categoryController) Create(w http.ResponseWriter, r *http.Request) {
 	categories := usecase.NewCategoryUsecase(controller.repo)
 
 	params := &model.CategoryParams{}
 
-	json.Unmarshal(ctx.PostBody(), params)
+	body, _ := ioutil.ReadAll(r.Body)
+
+	json.Unmarshal(body, params)
 
 	category, err := categories.Create(params)
 	if err != nil {
-		json.NewEncoder(ctx).Encode(err)
+		json.NewEncoder(w).Encode(err)
 
 		return
 	}
 
-	ctx.SetStatusCode(201) // Created
-
-	json.NewEncoder(ctx).Encode(category)
+	json.NewEncoder(w).Encode(category)
 }

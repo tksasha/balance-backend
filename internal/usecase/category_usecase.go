@@ -4,7 +4,6 @@ import (
 	"github.com/tksasha/balance/internal/model"
 	"github.com/tksasha/balance/internal/repository"
 	"github.com/tksasha/balance/internal/usecase/errors"
-	validator "github.com/tksasha/balance/pkg/model"
 )
 
 type categoryUsecase struct {
@@ -18,7 +17,11 @@ func NewCategoryUsecase(repo repository.CategoryRepository) *categoryUsecase {
 func (uc *categoryUsecase) Create(params *model.CategoryParams) (*model.Category, error) {
 	category := model.BuildCategory(params.Name)
 
-	if validator.Validate(category); !category.IsValid() {
+	if category.Name == "" {
+		category.Errors.Add("name", errors.CantBeBlank)
+	}
+
+	if !category.IsValid() {
 		return category, errors.RecordInvalidError
 	}
 

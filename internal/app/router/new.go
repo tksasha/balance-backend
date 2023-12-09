@@ -2,31 +2,20 @@ package router
 
 import (
 	"database/sql"
-	"log"
+	"net/http"
 
-	"github.com/fasthttp/router"
+	"github.com/gorilla/mux"
 	"github.com/tksasha/balance/internal/controller"
-	"github.com/valyala/fasthttp"
 )
 
-func New(db *sql.DB) func(*fasthttp.RequestCtx) {
-	r := router.New()
-
-	handler := func() func(ctx *fasthttp.RequestCtx) {
-		log.Println("Server is started")
-
-		return func(ctx *fasthttp.RequestCtx) {
-			log.Println("you middlewares might be places here")
-
-			r.Handler(ctx)
-		}
-	}
+func New(db *sql.DB) *mux.Router {
+	r := mux.NewRouter()
 
 	items := controller.NewItemController(db)
-	r.GET("/items/{id}", items.Show)
+	r.HandleFunc("/items/{id}", items.Show).Methods(http.MethodGet)
 
 	categories := controller.NewCategoryController(db)
-	r.POST("/categories", categories.Create)
+	r.HandleFunc("/categories", categories.Create).Methods(http.MethodPost)
 
-	return handler()
+	return r
 }
