@@ -1,3 +1,0 @@
-[submodule "pkg/model"]
-	path = pkg/model
-	url = git@github.com:tksasha/model.git
