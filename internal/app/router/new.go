@@ -1,21 +1,25 @@
 package router
 
 import (
-	"database/sql"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/tksasha/balance/internal/controller"
+	"github.com/tksasha/balance/config"
+	controllers "github.com/tksasha/balance/internal/interfaces/api"
+	database "github.com/tksasha/balance/internal/interfaces/sqlite3"
 )
 
-func New(db *sql.DB) *mux.Router {
-	r := mux.NewRouter()
+func New(config *config.Config) *mux.Router {
+	router := mux.NewRouter()
+	repository := database.Open(config)
 
-	items := controller.NewItemController(db)
-	r.HandleFunc("/items/{id}", items.Show).Methods(http.MethodGet)
+	// items := controller.NewItemController(db)
+	// r.HandleFunc("/items/{id}", items.Show).Methods(http.MethodGet)
 
-	categories := controller.NewCategoryController(db)
-	r.HandleFunc("/categories", categories.Create).Methods(http.MethodPost)
+	categories := controllers.NewCategoriesController(repository.NewCategoryRepository())
+	router.
+		HandleFunc("/categories", categories.Create).
+		Methods(http.MethodPost)
 
-	return r
+	return router
 }

@@ -1,20 +1,20 @@
-package model_test
+package models_test
 
 import (
 	"testing"
 
-	"github.com/tksasha/balance/internal/model"
+	"github.com/tksasha/balance/internal/models"
 	"gotest.tools/v3/assert"
 )
 
 func TestNewCategory(t *testing.T) {
-	category := model.NewCategory()
+	category := models.NewCategory()
 
 	assert.Assert(t, category.IsValid())
 }
 
 func TestBuildCategory(t *testing.T) {
-	category := model.BuildCategory("Category One")
+	category := models.BuildCategory("Category One")
 
 	assert.Equal(t, category.Name, "Category One")
 }

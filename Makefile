@@ -2,18 +2,16 @@ APP=cmd/balance/main.go
 PACKAGES=\
 	github.com/tksasha/balance/config \
 	github.com/tksasha/balance/internal/app \
-	github.com/tksasha/balance/internal/app/db \
 	github.com/tksasha/balance/internal/app/router \
-	github.com/tksasha/balance/internal/controller \
-	github.com/tksasha/balance/internal/interface/sqlite3/category \
-	github.com/tksasha/balance/internal/interface/sqlite3/item \
-	github.com/tksasha/balance/internal/interface/testdb/category \
-	github.com/tksasha/balance/internal/interface/testdb/errors \
-	github.com/tksasha/balance/internal/interface/testdb/item \
-	github.com/tksasha/balance/internal/model \
-	github.com/tksasha/balance/internal/repository \
-	github.com/tksasha/balance/internal/usecase \
-	github.com/tksasha/balance/internal/usecase/errors \
+	github.com/tksasha/balance/internal/interfaces/api \
+	github.com/tksasha/balance/internal/interfaces/sqlite3 \
+	github.com/tksasha/balance/internal/interfaces/sqlite3/category \
+	github.com/tksasha/balance/internal/interfaces/sqlite3/item \
+	github.com/tksasha/balance/internal/interfaces/testdb/category \
+	github.com/tksasha/balance/internal/interfaces/testdb/errors \
+	github.com/tksasha/balance/internal/interfaces/testdb/item \
+	github.com/tksasha/balance/internal/models \
+	github.com/tksasha/balance/internal/usecases/category \
 
 .PHONY: all
 all: vet fix fmt test
