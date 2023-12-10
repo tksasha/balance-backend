@@ -1,9 +1,12 @@
-GOVET=find . -name *.go -exec go vet {} \;
-GOFIX=find . -name *.go -exec go fix {} \;
 GOFMT=find . -name *.go -exec gofmt -l -s -w {} \;
-GOTEST=find . -name *_test.go -exec go test {} \;
 GOLINT=golangci-lint run
 APP=cmd/app/main.go
+PACKAGES= \
+	github.com/tksasha/balance/cmd/app \
+	github.com/tksasha/balance/internal/interfaces/test \
+	github.com/tksasha/balance/internal/models \
+	github.com/tksasha/balance/internal/repositories \
+	github.com/tksasha/balance/internal/usecases \
 
 .PHONY: all
 all: vet fix fmt lint test
@@ -15,12 +18,12 @@ run:
 .PHONY: vet
 vet:
 	@echo "go vet"
-	@$(GOVET)
+	@go vet $(PACKAGES)
 
 .PHONY: fix
 fix:
 	@echo "go fix"
-	@$(GOFIX)
+	@go fix $(PACKAGES)
 
 .PHONY: fmt
 fmt:
@@ -30,7 +33,7 @@ fmt:
 .PHONY: test
 test:
 	@echo "go test"
-	@$(GOTEST) $(PACKAGES)
+	@go test $(PACKAGES)
 
 .PHONY: lint
 lint:

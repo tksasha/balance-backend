@@ -21,8 +21,17 @@ func (usecase *CategoryUsecase) Create(params *CategoryParams) error {
 	category := models.BuildCategory(params.Name)
 
 	if err := usecase.repo.Create(category); err != nil {
-		return err
+		return ErrUnknown
 	}
 
 	return nil
+}
+
+func (usecase *CategoryUsecase) Show(id int) (*models.Category, error) {
+	category, err := usecase.repo.Find(id)
+	if err != nil {
+		return nil, ErrNotFound
+	}
+
+	return category, nil
 }

@@ -14,7 +14,7 @@ linters:
     - nosnakecase
     - varcheck
     ### disabled by me
-    # - gofumpt
+    - gofumpt
     - depguard
     # - varnamelen
     # - tagliatelle
@@ -22,17 +22,19 @@ linters:
     # - forbidigo
     # - godot
     - exhaustruct
-    - wrapcheck # TEMPORARY DISABLED
 linters-settings:
   gosec:
     excludes:
       - G114
 issues:
   exclude-rules:
-    - path: internal/interfaces/testdb
+    # - path: internal/interfaces/testdb
+    #   linters:
+    #     - gomnd
+    #     - gochecknoglobals
+    - path: _test.go$
       linters:
-        - gomnd
         - gochecknoglobals
-    - linters:
-      - revive
-      text: "blank-imports"
+    # - linters:
+    #   - revive
+    #   text: "blank-imports"

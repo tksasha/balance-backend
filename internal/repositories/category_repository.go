@@ -6,4 +6,5 @@ import (
 
 type CategoryRepository interface {
 	Create(category *models.Category) error
+	Find(id int) (*models.Category, error)
 }
