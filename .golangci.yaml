@@ -1,0 +1,36 @@
+linters:
+  enable-all: true
+  disable:
+    ### deprecated, archived or obsolette
+    - paralleltest
+    - deadcode
+    - ifshort
+    - interfacer
+    - golint
+    - maligned
+    - scopelint
+    - structcheck
+    - exhaustivestruct
+    - nosnakecase
+    - varcheck
+    ### disabled by me
+    - gofumpt
+    - depguard
+    - varnamelen
+    - tagliatelle
+    - gosmopolitan
+    - forbidigo
+    - godot
+linters-settings:
+  gosec:
+    excludes:
+      - G114
+issues:
+  exclude-rules:
+    - path: internal/interfaces/testdb
+      linters:
+        - gomnd
+        - gochecknoglobals
+    - linters:
+      - revive
+      text: "blank-imports"

@@ -1,20 +1,10 @@
-APP=cmd/balance/main.go
+LINT=golangci-lint run
+
+APP=cmd/app/app.go
 PACKAGES=\
-	github.com/tksasha/balance/config \
-	github.com/tksasha/balance/internal/app \
-	github.com/tksasha/balance/internal/app/router \
-	github.com/tksasha/balance/internal/interfaces/api \
-	github.com/tksasha/balance/internal/interfaces/sqlite3 \
-	github.com/tksasha/balance/internal/interfaces/sqlite3/category \
-	github.com/tksasha/balance/internal/interfaces/sqlite3/item \
-	github.com/tksasha/balance/internal/interfaces/testdb/category \
-	github.com/tksasha/balance/internal/interfaces/testdb/errors \
-	github.com/tksasha/balance/internal/interfaces/testdb/item \
-	github.com/tksasha/balance/internal/models \
-	github.com/tksasha/balance/internal/usecases/category \
 
 .PHONY: all
-all: vet fix fmt test
+all: vet fix fmt lint test
 
 .PHONY: run
 run:
@@ -42,3 +32,8 @@ fmt:
 test:
 	@echo "go test"
 	@go test $(PACKAGES)
+
+.PHONY: lint
+lint:
+	@echo "go lint"
+	@$(LINT)
