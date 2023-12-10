@@ -1,7 +1,7 @@
 linters:
   enable-all: true
   disable:
-    ### deprecated, archived or obsolette
+    ### deprecated, archived or obsolette by authors
     - paralleltest
     - deadcode
     - ifshort
@@ -14,13 +14,15 @@ linters:
     - nosnakecase
     - varcheck
     ### disabled by me
-    - gofumpt
+    # - gofumpt
     - depguard
-    - varnamelen
-    - tagliatelle
-    - gosmopolitan
-    - forbidigo
-    - godot
+    # - varnamelen
+    # - tagliatelle
+    # - gosmopolitan
+    # - forbidigo
+    # - godot
+    - exhaustruct
+    - wrapcheck # TEMPORARY DISABLED
 linters-settings:
   gosec:
     excludes:

@@ -1,14 +1,4 @@
 github.com/google/go-cmp v0.5.9 h1:O2Tfq5qg4qc4AmwVlvv0oLiVAGB7enBSJ2x2DqQFi38=
 github.com/google/go-cmp v0.5.9/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
-github.com/gorilla/mux v1.8.1 h1:TuBL49tXwgrFYWhqrNgrUNEY92u81SPhu7sTdzQEiWY=
-github.com/gorilla/mux v1.8.1/go.mod h1:AKf9I4AEqPTmMytcMc0KkNouC66V3BtZ4qD5fmWSiMQ=
-github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
-github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
-github.com/mattn/go-sqlite3 v1.14.18 h1:JL0eqdCOq6DJVNPSvArO/bIV9/P7fbGrV00LZHc+5aI=
-github.com/mattn/go-sqlite3 v1.14.18/go.mod h1:2eHXhiwb8IkHr+BDWZGa96P6+rkvnG63S2DGjv9HUNg=
-github.com/tksasha/model v0.0.0-20231209082104-b256e22e31ae h1:EFRpQweGaIDJbluCcz/zGX6+U3GhvRcdCHG+3wWWgIo=
-github.com/tksasha/model v0.0.0-20231209082104-b256e22e31ae/go.mod h1:FADIwLXOAGhEY1OIZzhCbFnr40RA8vBEDlANt+JvJzY=
-github.com/tksasha/utils v0.0.0-20231209080607-bebc3df2b86a h1:RJQU+4vmzOdAuRzLJT0dXeumDtg3mJYXlmTaPtKolQE=
-github.com/tksasha/utils v0.0.0-20231209080607-bebc3df2b86a/go.mod h1:E/qSHzWITFu4jlT/TOl8oLot6UW6kAZrmLIvWIAjfwo=
 gotest.tools/v3 v3.5.1 h1:EENdUnS3pdur5nybKYIh2Vfgc8IUNBjxDPSjtiJcOzU=
 gotest.tools/v3 v3.5.1/go.mod h1:isy3WKz7GK6uNw/sbHzfKBLvlvXwUyV06n6brMxxopU=
