@@ -3,6 +3,6 @@ package usecases
 import "errors"
 
 var (
-	ErrNotFound = errors.New("NOT FOUND")
-	ErrUnknown  = errors.New("UNKNOWN ERROR")
+	ErrNotFound = errors.New("[APP ERROR] NOT FOUND")
+	ErrUnknown  = errors.New("[APP ERROR] UNKNOWN")
 )

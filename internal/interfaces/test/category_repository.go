@@ -26,7 +26,7 @@ func (repo *CategoryRepository) Create(*models.Category) error {
 		return nil
 	}
 
-	return ErrDB
+	return ErrUnknown
 }
 
 func (repo *CategoryRepository) Find(int) (*models.Category, error) {

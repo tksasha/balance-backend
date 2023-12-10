@@ -3,6 +3,6 @@ package test
 import "errors"
 
 var (
-	ErrNotFound = errors.New("NOT FOUND")
-	ErrDB       = errors.New("DB ERROR")
+	ErrNotFound = errors.New("[DB ERROR] NOT FOUND")
+	ErrUnknown  = errors.New("[DB ERROR] UNKNOWN")
 )

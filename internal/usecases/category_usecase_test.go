@@ -30,7 +30,7 @@ func TestCreate(t *testing.T) {
 
 		err := categoryUsecase.Create(params)
 
-		assert.Error(t, err, "UNKNOWN ERROR")
+		assert.Error(t, err, "[APP ERROR] UNKNOWN")
 	})
 }
 
@@ -51,7 +51,7 @@ func TestShow(t *testing.T) {
 
 		category, err := categoryUsecase.Show(1817)
 
-		assert.Error(t, err, "NOT FOUND")
+		assert.Error(t, err, "[APP ERROR] NOT FOUND")
 		assert.Assert(t, category == nil)
 	})
 }
