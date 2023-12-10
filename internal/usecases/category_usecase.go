@@ -2,33 +2,33 @@ package usecases
 
 import (
 	"github.com/tksasha/balance/internal/models"
-	repos "github.com/tksasha/balance/internal/repositories"
+	"github.com/tksasha/balance/internal/repositories"
 )
 
 type CategoryUsecase struct {
-	repo repos.CategoryRepository
+	repository repositories.CategoryRepository
 }
 
 type CategoryParams struct {
-	Name string
+	Name string `json:"name"`
 }
 
-func NewCategoryUsecase(repo repos.CategoryRepository) *CategoryUsecase {
-	return &CategoryUsecase{repo}
+func NewCategoryUsecase(repository repositories.CategoryRepository) *CategoryUsecase {
+	return &CategoryUsecase{repository}
 }
 
-func (usecase *CategoryUsecase) Create(params *CategoryParams) error {
+func (usecase *CategoryUsecase) Create(params *CategoryParams) (*models.Category, error) {
 	category := models.BuildCategory(params.Name)
 
-	if err := usecase.repo.Create(category); err != nil {
-		return ErrUnknown
+	if err := usecase.repository.Create(category); err != nil {
+		return nil, ErrUnknown
 	}
 
-	return nil
+	return category, nil
 }
 
 func (usecase *CategoryUsecase) Show(id int) (*models.Category, error) {
-	category, err := usecase.repo.Find(id)
+	category, err := usecase.repository.Find(id)
 	if err != nil {
 		return nil, ErrNotFound
 	}

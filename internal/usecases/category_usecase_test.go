@@ -18,19 +18,26 @@ func TestCreate(t *testing.T) {
 	params := &usecases.CategoryParams{Name: "Category #1"}
 
 	t.Run("when Category should be created", func(t *testing.T) {
-		categoryRepository.SetShouldBeCreated(true)
+		categoryRepository.
+			SetCategoryShouldBeCreated(true).
+			SetCategoryID(2252)
 
-		err := categoryUsecase.Create(params)
+		category, err := categoryUsecase.Create(params)
+
+		expected := models.Category{ID: 2252, Name: "Category #1"}
 
 		assert.NilError(t, err)
+		assert.Equal(t, *category, expected)
 	})
 
 	t.Run("when Category shouldn't be created", func(t *testing.T) {
-		categoryRepository.SetShouldBeCreated(false)
+		categoryRepository.
+			SetCategoryShouldBeCreated(false)
 
-		err := categoryUsecase.Create(params)
+		category, err := categoryUsecase.Create(params)
 
 		assert.Error(t, err, "[APP ERROR] UNKNOWN")
+		assert.Assert(t, category == nil)
 	})
 }
 

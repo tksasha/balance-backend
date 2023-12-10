@@ -5,34 +5,47 @@ import (
 )
 
 type CategoryRepository struct {
-	Category        *models.Category
-	ShouldBeCreated bool
+	Category                *models.Category
+	CategoryID              int
+	CategoryShouldBeCreated bool
 }
 
 func NewCategoryRepository() *CategoryRepository {
 	return &CategoryRepository{}
 }
 
-func (repo *CategoryRepository) SetCategory(category *models.Category) {
-	repo.Category = category
+func (repository *CategoryRepository) SetCategory(category *models.Category) *CategoryRepository {
+	repository.Category = category
+
+	return repository
 }
 
-func (repo *CategoryRepository) SetShouldBeCreated(flag bool) {
-	repo.ShouldBeCreated = flag
+func (repository *CategoryRepository) SetCategoryID(id int) *CategoryRepository {
+	repository.CategoryID = id
+
+	return repository
 }
 
-func (repo *CategoryRepository) Create(*models.Category) error {
-	if repo.ShouldBeCreated {
+func (repository *CategoryRepository) SetCategoryShouldBeCreated(flag bool) *CategoryRepository {
+	repository.CategoryShouldBeCreated = flag
+
+	return repository
+}
+
+func (repository *CategoryRepository) Create(category *models.Category) error {
+	if repository.CategoryShouldBeCreated {
+		category.ID = repository.CategoryID
+
 		return nil
 	}
 
 	return ErrUnknown
 }
 
-func (repo *CategoryRepository) Find(int) (*models.Category, error) {
-	if repo.Category == nil {
+func (repository *CategoryRepository) Find(int) (*models.Category, error) {
+	if repository.Category == nil {
 		return nil, ErrNotFound
 	}
 
-	return repo.Category, nil
+	return repository.Category, nil
 }

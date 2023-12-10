@@ -21,6 +21,7 @@ linters:
     # - gosmopolitan
     # - forbidigo
     # - godot
+    - godox
     - exhaustruct
 linters-settings:
   gosec:
@@ -35,6 +36,9 @@ issues:
     - path: _test.go$
       linters:
         - gochecknoglobals
+    - linters:
+      - varnamelen
+      text: "parameter name 'w' is too short for the scope of its usage"
     # - linters:
     #   - revive
     #   text: "blank-imports"
