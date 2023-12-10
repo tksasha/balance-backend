@@ -3,14 +3,14 @@ package usecases_test
 import (
 	"testing"
 
-	repos "github.com/tksasha/balance/internal/interfaces/test"
+	"github.com/tksasha/balance/internal/interfaces/dummydb"
 	"github.com/tksasha/balance/internal/models"
 	"github.com/tksasha/balance/internal/usecases"
 	"gotest.tools/v3/assert"
 )
 
 var (
-	categoryRepository = repos.NewCategoryRepository()
+	categoryRepository = dummydb.NewCategoryRepository()
 	categoryUsecase    = usecases.NewCategoryUsecase(categoryRepository)
 )
 

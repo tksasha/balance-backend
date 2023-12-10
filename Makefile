@@ -3,7 +3,8 @@ GOLINT=golangci-lint run
 APP=cmd/app/main.go
 PACKAGES= \
 	github.com/tksasha/balance/cmd/app \
-	github.com/tksasha/balance/internal/interfaces/test \
+	github.com/tksasha/balance/internal/interfaces/api \
+	github.com/tksasha/balance/internal/interfaces/dummydb \
 	github.com/tksasha/balance/internal/models \
 	github.com/tksasha/balance/internal/repositories \
 	github.com/tksasha/balance/internal/usecases \
