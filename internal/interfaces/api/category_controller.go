@@ -33,7 +33,9 @@ func (controller *CategoryController) Create(w http.ResponseWriter, r *http.Requ
 
 	category, err := controller.usecase.Create(params)
 	if err != nil {
-		panic(err)
+		JSON(w, err.Error())
+
+		return
 	}
 
 	JSON(w, category)
