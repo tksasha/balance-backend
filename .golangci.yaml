@@ -15,25 +15,12 @@ linters:
     - structcheck
     - varcheck
     ### disabled by me
-    # - forbidigo
-    # - godot
-    # - gosmopolitan
-    # - tagliatelle
-    # - varnamelen
     - depguard
     - exhaustruct
     - godox
     - gofumpt
-linters-settings:
-  gosec:
-    excludes:
-      - G114
 issues:
   exclude-rules:
-    # - path: internal/interfaces/testdb
-    #   linters:
-    #     - gomnd
-    #     - gochecknoglobals
     - path: _test.go$
       linters:
         - gochecknoglobals

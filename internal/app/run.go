@@ -19,5 +19,13 @@ func Run() {
 
 	router := NewRouter(app)
 
-	log.Fatal(http.ListenAndServe(":3000", router))
+	server := &http.Server{
+		Addr:           ":3000",
+		Handler:        router,
+		ReadTimeout:    config.ReadTimeout,
+		WriteTimeout:   config.WriteTimeout,
+		MaxHeaderBytes: config.MaxHeaderBytes,
+	}
+
+	log.Fatal(server.ListenAndServe())
 }
