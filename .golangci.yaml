@@ -2,27 +2,28 @@ linters:
   enable-all: true
   disable:
     ### deprecated, archived or obsolette by authors
-    - paralleltest
     - deadcode
+    - exhaustivestruct
+    - gci
+    - golint
     - ifshort
     - interfacer
-    - golint
     - maligned
+    - nosnakecase
+    - paralleltest
     - scopelint
     - structcheck
-    - exhaustivestruct
-    - nosnakecase
     - varcheck
     ### disabled by me
-    - gofumpt
-    - depguard
-    # - varnamelen
-    # - tagliatelle
-    # - gosmopolitan
     # - forbidigo
     # - godot
-    - godox
+    # - gosmopolitan
+    # - tagliatelle
+    # - varnamelen
+    - depguard
     - exhaustruct
+    - godox
+    - gofumpt
 linters-settings:
   gosec:
     excludes:
@@ -36,9 +37,10 @@ issues:
     - path: _test.go$
       linters:
         - gochecknoglobals
+        - goerr113
     - linters:
       - varnamelen
       text: "parameter name 'w' is too short for the scope of its usage"
-    # - linters:
-    #   - revive
-    #   text: "blank-imports"
+    - linters:
+      - revive
+      text: "blank-imports"

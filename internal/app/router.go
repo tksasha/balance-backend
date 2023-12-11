@@ -7,13 +7,13 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	controllers "github.com/tksasha/balance/internal/interfaces/api"
-	"github.com/tksasha/balance/internal/interfaces/dummydb"
+	"github.com/tksasha/balance/internal/interfaces/sqlite3"
 )
 
-func NewRouter() *mux.Router {
+func NewRouter(app *App) *mux.Router {
 	router := mux.NewRouter()
 
-	repository := dummydb.NewCategoryRepository()
+	repository := sqlite3.NewCategoryRepository(app.DBConn)
 
 	categories := controllers.NewCategoryController(repository)
 
