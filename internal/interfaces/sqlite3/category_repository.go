@@ -2,6 +2,7 @@ package sqlite3
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/tksasha/balance/internal/models"
 )
@@ -19,12 +20,12 @@ func (repository *CategoryRepository) Create(category *models.Category) error {
 
 	res, err := repository.db.Exec(query, category.Name)
 	if err != nil {
-		return NewQueryError(err)
+		return fmt.Errorf("[DB][QUERY] %w", err)
 	}
 
 	id, err := res.LastInsertId()
 	if err != nil {
-		return NewIDError(err)
+		return fmt.Errorf("[DB][ID] %w", err)
 	}
 
 	category.ID = int(id)
