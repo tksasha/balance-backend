@@ -8,18 +8,18 @@ import (
 	"gotest.tools/v3/assert"
 )
 
-type DBError struct{}
+type dbError struct{}
 
-func (err *DBError) Error() string {
+func (err *dbError) Error() string {
 	return `{"database":"error"}`
 }
 
-func TestApplicationError(t *testing.T) {
+func TestError(t *testing.T) {
 	expected := `{"application":{"database":"error"}}`
 
 	result, err := json.Marshal(
-		usecases.NewApplicationError(
-			&DBError{},
+		usecases.NewError(
+			&dbError{},
 		),
 	)
 

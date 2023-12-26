@@ -22,19 +22,23 @@ func NewCategoryHandler(repository repositories.Category) *CategoryHandler {
 func (handler *CategoryHandler) Create(w http.ResponseWriter, r *http.Request) {
 	data, err := io.ReadAll(r.Body)
 	if err != nil {
-		panic(err) // TODO: return Bad Request
+		JSON(w, NewError(err))
+
+		return
 	}
 
 	params := new(usecases.CategoryParams)
 
 	if err := json.Unmarshal(data, params); err != nil {
-		panic(err) // TODO: return Bad Request
+		JSON(w, NewError(err))
+
+		return
 	}
 
 	category, err := handler.usecase.Create(params)
 
 	if err != nil {
-		JSON(w, err)
+		JSON(w, NewError(err))
 
 		return
 	}
