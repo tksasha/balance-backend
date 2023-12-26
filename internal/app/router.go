@@ -1,19 +1,27 @@
 package app
 
 import (
-	"github.com/gorilla/mux"
+	"net/http"
+
 	"github.com/tksasha/balance/internal/interfaces/api"
 	"github.com/tksasha/balance/internal/interfaces/sqlite3"
 )
 
-func NewRouter(app *App) *mux.Router {
-	router := mux.NewRouter()
+func NewRouter(app *App) *http.ServeMux {
+	mux := http.NewServeMux()
 
 	repository := sqlite3.NewCategoryRepository(app.DBConn)
 
-	router.
-		HandleFunc("/categories", api.NewCategoryHandler(repository).Create).
-		Methods("POST")
+	categories := api.NewCategoryHandler(repository)
 
-	return router
+	mux.
+		HandleFunc("/categories", func(w http.ResponseWriter, r *http.Request) {
+			if r.Method == http.MethodPost {
+				categories.Create(w, r)
+
+				return
+			}
+		})
+
+	return mux
 }

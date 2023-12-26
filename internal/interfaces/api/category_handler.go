@@ -34,12 +34,10 @@ func (handler *CategoryHandler) Create(w http.ResponseWriter, r *http.Request) {
 	category, err := handler.usecase.Create(params)
 
 	if err != nil {
-		JSON(w, err.Error())
+		JSON(w, err)
 
 		return
 	}
-
-	w.Header().Set("content-type", "application/json")
 
 	JSON(w, category)
 }
