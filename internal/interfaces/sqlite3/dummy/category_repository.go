@@ -16,12 +16,12 @@ func (repository CategoryRepository) Create(category *models.Category) error {
 		return nil
 	}
 
-	return ErrUnknown
+	return &UnknownError{}
 }
 
 func (repository CategoryRepository) Find(int) (*models.Category, error) {
 	if repository.Category == nil {
-		return nil, ErrNotFound
+		return nil, &NotFoundError{}
 	}
 
 	return repository.Category, nil

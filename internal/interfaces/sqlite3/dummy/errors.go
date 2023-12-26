@@ -1,10 +1,13 @@
 package dummy
 
-import (
-	"fmt"
-)
+type NotFoundError struct{}
 
-var (
-	ErrNotFound = fmt.Errorf("NOT FOUND")
-	ErrUnknown  = fmt.Errorf("UNKNOWN")
-)
+func (err *NotFoundError) Error() string {
+	return `{"database":"not found"}`
+}
+
+type UnknownError struct{}
+
+func (err *UnknownError) Error() string {
+	return `{"database":"unknown"}`
+}

@@ -30,7 +30,7 @@ func TestCreateCategory(t *testing.T) {
 			dummy.CategoryRepository{},
 		).Create(params)
 
-		assert.Error(t, err, `{"application":{"UnknownError":"UNKNOWN"}}`)
+		assert.Error(t, err, `{"application":{"database":"unknown"}}`)
 		assert.Assert(t, category == nil)
 	})
 }
@@ -54,7 +54,7 @@ func TestFind(t *testing.T) {
 			dummy.CategoryRepository{},
 		).Find(1230)
 
-		assert.Error(t, err, `{"application":{"NotFoundError":"NOT FOUND"}}`)
+		assert.Error(t, err, `{"application":{"database":"not found"}}`)
 		assert.Assert(t, category == nil)
 	})
 }

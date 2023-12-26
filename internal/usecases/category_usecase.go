@@ -21,7 +21,7 @@ func (usecase *CategoryUsecase) Create(params *CategoryParams) (*models.Category
 	category := models.BuildCategory(params.Name)
 
 	if err := usecase.repository.Create(category); err != nil {
-		return nil, NewUnknownError(err)
+		return nil, NewApplicationError(err)
 	}
 
 	return category, nil
@@ -30,7 +30,7 @@ func (usecase *CategoryUsecase) Create(params *CategoryParams) (*models.Category
 func (usecase *CategoryUsecase) Find(id int) (*models.Category, error) {
 	category, err := usecase.repository.Find(id)
 	if err != nil {
-		return nil, NewNotFoundError(err)
+		return nil, NewApplicationError(err)
 	}
 
 	return category, nil
