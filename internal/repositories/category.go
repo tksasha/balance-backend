@@ -4,6 +4,7 @@ import (
 	"github.com/tksasha/balance/internal/models"
 )
 
-type CategoryCreator interface {
+type Category interface {
 	Create(category *models.Category) error
+	Find(id int) (*models.Category, error)
 }

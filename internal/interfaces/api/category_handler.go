@@ -10,11 +10,13 @@ import (
 )
 
 type CategoryHandler struct {
-	repository repositories.CategoryCreator
+	usecase *usecases.CategoryUsecase
 }
 
-func NewCategoryHandler(repository repositories.CategoryCreator) *CategoryHandler {
-	return &CategoryHandler{repository}
+func NewCategoryHandler(repository repositories.Category) *CategoryHandler {
+	return &CategoryHandler{
+		usecases.NewCategoryUsecase(repository),
+	}
 }
 
 func (handler *CategoryHandler) Create(w http.ResponseWriter, r *http.Request) {
@@ -29,9 +31,7 @@ func (handler *CategoryHandler) Create(w http.ResponseWriter, r *http.Request) {
 		panic(err) // TODO: return Bad Request
 	}
 
-	category, err := usecases.
-		NewCreateCategory(handler.repository).
-		Create(params)
+	category, err := handler.usecase.Create(params)
 
 	if err != nil {
 		JSON(w, err.Error())
