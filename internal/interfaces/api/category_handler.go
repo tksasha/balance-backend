@@ -22,7 +22,7 @@ func NewCategoryHandler(repository repositories.Category) *CategoryHandler {
 func (handler *CategoryHandler) Create(w http.ResponseWriter, r *http.Request) {
 	data, err := io.ReadAll(r.Body)
 	if err != nil {
-		JSON(w, NewError(err))
+		JSON(w, http.StatusBadRequest, NewError(err))
 
 		return
 	}
@@ -30,7 +30,7 @@ func (handler *CategoryHandler) Create(w http.ResponseWriter, r *http.Request) {
 	params := new(usecases.CategoryParams)
 
 	if err := json.Unmarshal(data, params); err != nil {
-		JSON(w, NewError(err))
+		JSON(w, http.StatusBadRequest, NewError(err))
 
 		return
 	}
@@ -38,10 +38,10 @@ func (handler *CategoryHandler) Create(w http.ResponseWriter, r *http.Request) {
 	category, err := handler.usecase.Create(params)
 
 	if err != nil {
-		JSON(w, NewError(err))
+		JSON(w, http.StatusUnprocessableEntity, NewError(err))
 
 		return
 	}
 
-	JSON(w, category)
+	JSON(w, http.StatusCreated, category)
 }
